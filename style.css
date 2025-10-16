@@ -1,0 +1,10 @@
+/* Header */
+.HeaderTabs{
+  display:flex;
+  justify-content:space-evenly;
+  
+
+}
+.home-tab-btn{
+  margin-right:5px;
+}

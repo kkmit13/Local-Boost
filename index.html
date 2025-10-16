@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalBoost</title>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <header>
+      <nav>
+            <div class="HeaderTabs">
+                <p><a href="#" id="home-tab-btn">Home</a></p>
+                <p><a href="#" id="bookmarks-tab-btn">Bookmarks</a></p>
+                <p><a href="#" id="deals-tab-btn">Deals</a></p>
+            </div>
+
+        </nav>
+
+        <h1>LocalBoost</h1>
+        
+    </header>
+
+    
+    <main>
+        
+        <section id="home-tab" class="tab-section">
+            <h2>Home</h2>
+            
+            <input type="text" placeholder="Search businesses..." id="search-bar">
+            <div id="business-list">
+                
+            </div>
+        </section>
+
+       
+        <section id="bookmarks-tab" class="tab-section" style="display:none;">
+            <h2>Bookmarks</h2>
+            <div id="bookmarked-businesses"></div>
+        </section>
+
+        
+        <section id="deals-tab" class="tab-section" style="display:none;">
+            <h2>Deals</h2>
+            <div id="deals-list"></div>
+        </section>
+    </main>
+
+    
+    <script src="app.js"></script>
+</body>
+</html>
