@@ -58,14 +58,21 @@ body{
 
 }
 #search-bar{
-    width:50%;
-    padding: 8px 12px;
-    font-size:16px;
-    border-radius: 10px;
-    border-style:solid;
-    border-color:black;
-    border-width:2.25px;
-
+width: 50%;
+  background-color: var(white);
+  box-sizing: border-box;
+  font-size: 20px;
+  padding: 0.8% 0.8%;
+  text-align: center;
+  border-radius: 5px;
+  outline: none;
+  margin: 15px auto; /* Center the search bar */
+  border: 3px solid #0a0404;
+  border-radius: 10px;
+  transition: opacity 0.25s ease-in-out;
+  opacity: 100%;
+  display: grid;
+  place-items: center;
 }
 
 footer {
