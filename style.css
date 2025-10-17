@@ -73,7 +73,7 @@ width: 50%;
   opacity: 100%;
   display: grid;
   place-items: center;
-  pointer-events: none;
+  cursor: pointer;
 }
 
 footer {
