@@ -90,4 +90,6 @@ text-align: center;
 font-family: Georgia;
 color: grey;
 align-items: center;
+display: grid;
+place-items: center;
 }
