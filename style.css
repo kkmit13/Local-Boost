@@ -3,20 +3,19 @@
   display: flex;
   justify-content: flex-end; /* pushes all tabs to the right */
   align-items: center;
-  background-color: white;
+  background-color: #1e3a8a;
   padding: 15px 40px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 100;
   gap: 30px; /* adds spacing between tabs */
-
 }
 
 
 .HeaderTabs p a {
   text-decoration: none;
-  color: #0d0101;
+  color: #c0c0c0;
   font-weight: 600;
   font-size: 18px;
   margin: 0 30px; 
@@ -25,16 +24,22 @@
 }
 
 .HeaderTabs p a:hover {
-  color: #0004098a; 
+  color: #ffffff; 
   transform: scale(1.1); 
 }
 
 body{
-  background-color: #F9FAFB; /* light background for readability */
-  color: #333333; /* dark text */
-  font-family: 'Poppins', sans-serif;
+  background-color: #8fb2e1; /* light background for readability */
+  color: #222; /* dark text */
+  font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
+}
+
+.Home-Message{
+  color:grey;
+  text-align:center;
+
 }
 
 
@@ -46,21 +51,29 @@ body{
 
 }
 
-.search-bar{
-  input[type="text"] {
-  width: 50%;
-  background-color: var(white);
-  box-sizing: border-box;
-  font-size: 28px;
-  padding: 0.8% 0.8%;
-  text-align: center;
-  border-radius: 6px;
-  outline: none;
-  margin: 15px auto;
-  border: 3px solid #0a0202;
-  border-radius: 10px;
-  transition: opacity 0.25s ease-in-out;
-  opacity: 100%;
+.search-div{
+    text-align: center;
+    margin-top:125px;
+    
+
 }
+#search-bar{
+    width:50%;
+    padding: 8px 12px;
+    font-size:16px;
+    border-radius: 10px;
+    border-style:solid;
+    border-color:black;
+    border-width:2.25px;
+
+}
+
+footer {
+  background-color: #1e3a8a; /* dark teal */
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 14px;
+  margin-top: 265px;
 }
 
