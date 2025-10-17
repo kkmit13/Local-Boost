@@ -10,12 +10,13 @@
   top: 0;
   z-index: 100;
   gap: 30px; /* adds spacing between tabs */
+
 }
 
 
 .HeaderTabs p a {
   text-decoration: none;
-  color: #333;
+  color: #0d0101;
   font-weight: 600;
   font-size: 18px;
   margin: 0 30px; 
@@ -24,7 +25,7 @@
 }
 
 .HeaderTabs p a:hover {
-  color: #0077ff8a; 
+  color: #0004098a; 
   transform: scale(1.1); 
 }
 
@@ -46,6 +47,20 @@ body{
 }
 
 .search-bar{
-  align-items:center;
+  input[type="text"] {
+  width: 50%;
+  background-color: var(white);
+  box-sizing: border-box;
+  font-size: 28px;
+  padding: 0.8% 0.8%;
+  text-align: center;
+  border-radius: 6px;
+  outline: none;
+  margin: 15px auto;
+  border: 3px solid #0a0202;
+  border-radius: 10px;
+  transition: opacity 0.25s ease-in-out;
+  opacity: 100%;
+}
 }
 
