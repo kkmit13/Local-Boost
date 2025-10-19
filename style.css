@@ -211,3 +211,20 @@ main {
 .review-btn:active{
   opacity:0.6;
 }
+
+#AI-Button{
+  background-color: #87CEEB;
+  border: 3px solid white;
+  color: #0E3386;
+  text-align: center;
+  font-family: "arial";
+}
+
+#AI-Button:hover a {
+  background-color: #87CEEB;
+  border: 2px solid white;
+  color: #f5f0f0;
+  text-align: center;
+  font-family: "Arial";
+  cursor: pointer;
+}
