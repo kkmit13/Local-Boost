@@ -148,7 +148,7 @@ main {
 
 #business-listings-button{
   text-decoration: none;
-  color: #f5f0f0;
+  color: #0E3386;
   font-weight: 600;
   font-size: 18px;
   margin: 0 30px;
@@ -157,9 +157,11 @@ main {
 
 
 }
-
-
-
+#business-listings-button a :hover {
+  color: #FAF9F6;
+  background-color: #0a2a7a; /* dark blue background */
+  border-radius: 5px;
+}
 
 
 
