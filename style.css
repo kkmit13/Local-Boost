@@ -146,7 +146,7 @@ main {
 /* Business Listings Page */
 
 
-#business-listings-button{
+.business-listings-button{
   text-decoration: none;
   color: #0E3386;
   font-weight: 600;
@@ -157,7 +157,7 @@ main {
 
 
 }
-#business-listings-button a :hover {
+.business-listings-button:hover {
   color: #FAF9F6;
   background-color: #0a2a7a; /* dark blue background */
   border-radius: 5px;
@@ -212,19 +212,23 @@ main {
   opacity:0.6;
 }
 
-#AI-Button{
+.AI-Button{
   background-color: #87CEEB;
-  border: 3px solid white;
+  border: 2px solid #0E3386;
   color: #0E3386;
   text-align: center;
   font-family: "arial";
+  margin: 50px;
+  border-radius: 3px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
-#AI-Button:hover a {
+.AI-Button:hover {
   background-color: #87CEEB;
-  border: 2px solid white;
+  border: 2px solid #0E3386;
   color: #f5f0f0;
   text-align: center;
-  font-family: "Arial";
+  font-family: Arial;
   cursor: pointer;
 }
