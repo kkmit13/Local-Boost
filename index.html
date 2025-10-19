@@ -1,67 +1,85 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LocalBoost</title>
-    
+   
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+   
     <header>
       <nav>
+            <div class="HeaderTabs">
+                <p><a href="#" id="home-tab-btn">Home</a></p>
+                <p><a href="#" id="listings-tab-btn">Business Listings</a></p>
+                <p><a href="#" id="bookmarks-tab-btn">Bookmarks</a></p>
+                <p><a href="#" id="deals-tab-btn">Deals</a></p>
+            </div>
 
-            <div class="HeaderTabs"
-    div style="display: table-grid">
-
-     <div style="width:600px; display: table-cell;"><p><h2 style="margin: -20px;" id="fall"><strong>LocalBoost</strong><img src="" alt="" width="35"></h2></p> </div>
-
-      <p><a href="#" id="home-tab-btn">Home</a></p>
-                <p><a href="bookmarks.html" id="bookmarks-tab-btn">Bookmarks</a></p>
-                <p><a href="deals.html" id="deals-tab-btn">Deals</a></p>
-        
-    </div>
 
         </nav>
 
-        <h1 class="HeaderTitle">LocalBoost</h1>
-        
+
+        <h1 class="HeaderTitle">LocalLink</h1>
+        <h2 class="Home-Message">Discover local businesses near you</h2>
+       
     </header>
 
-    <div class="Discover"
-    <center>
-    <h3><b>Discover local businesses near you!</b></h3>
-    </center>
-    </div>
 
-    
+   
     <main>
-        
+       
         <section id="home-tab" class="tab-section">
-        
-            
-            <input type="text" placeholder="Search businesses..." id="search-bar">
+       
+            <div class="search-div">
+               <input type="text" placeholder="Search businesses..." id="search-bar">
+            </div>
+           
             <div id="business-list">
-                
+               
             </div>
         </section>
 
-       
+
+
+
+
+
+         <section id="listings-tab" class="tab-section" style="display:none;">
+            <h2>Business Listings</h2>
+          <div id="all-businesses">
+     
+           <p>Coming soon — this will show all businesses in a grid/list.</p>
+         </div>
+          </section>
+
+
         <section id="bookmarks-tab" class="tab-section" style="display:none;">
             <h2>Bookmarks</h2>
             <div id="bookmarked-businesses"></div>
         </section>
 
-        
+
+       
         <section id="deals-tab" class="tab-section" style="display:none;">
             <h2>Deals</h2>
             <div id="deals-list"></div>
         </section>
     </main>
 
-    
+
+  <footer>
+    <p>&copy; 2025 LocalLink — Empowering local connections.</p>
+  </footer>
+
+
+
+
+   
     <script src="app.js"></script>
 </body>
 </html>
+
+
