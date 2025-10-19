@@ -22,28 +22,42 @@
   <main>
     <div id="listings"></div>
 
+
+   
     <script src="SampleData.js"></script>
 
-    <script>
-      const container = document.getElementById("listings");
-      const businesses = window.sampleData && window.sampleData.businesses ? window.sampleData.businesses : [];
 
-      businesses.forEach(business => {
+    <script>
+ 
+      const container = document.getElementById("listings");
+
+
+      /* It iterates the Listings object inside of an element using an arrow function and defines something called business */
+      LISTINGS.forEach(business => {
+        /*Creates a div call card, gives it the name business-card */
         const card = document.createElement("div");
         card.classList.add("business-card");
+        /* runs the object from the sampledate.js thingy inside of the card, adding these elements */
+
 
         card.innerHTML = `
           <h2>${business.name}</h2>
           <p>${business.category}</p>
           <p>${business.address}</p>
           <p>Rating: ${business.rating} (${business.reviewCount} reviews)</p>
-          <p>Price Range: ${business.priceRange}</p>
+          <p>Price Range: ${"$".repeat(business.priceRange)}</p>
           <p>${business.website}</p>
           <button class="review-btn">Leave a Review</button>
           <hr>
         `;
 
+
+       
+
+
+       
         container.appendChild(card);
+       
       });
     </script>
   </main>
