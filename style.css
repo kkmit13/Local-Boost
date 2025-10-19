@@ -1,14 +1,16 @@
+/* Header */
 .HeaderTabs {
   display: flex;
   justify-content: flex-end; /* pushes all tabs to the right */
   align-items: center;
-  background-color: #1e3a8a;
+  background-color: #87CEEB;
   padding: 15px 40px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 100;
   gap: 30px; /* adds spacing between tabs */
+  margin-bottom:10px;
 }
 
 
@@ -16,7 +18,7 @@
 
 .HeaderTabs p a {
   text-decoration: none;
-  color: #c0c0c0;
+  color: #0E3386;
   font-weight: 600;
   font-size: 18px;
   margin: 0 30px;
@@ -25,14 +27,47 @@
 }
 
 
+#title-text{
+  display: flex;
+  margin-right:auto;
+  font-size:22px;
+  font-weight:600;
+
+
+
+
+
+
+
+
+}
+
+
+#logo-image{
+  width:50px;
+  height:50px;
+}
+
+
 .HeaderTabs p a:hover {
-  color: #ffffff;
+  color: #FAF9F6;
   transform: scale(1.1);
 }
 
 
+#home-page-btn{
+  text-decoration: none;
+  color: #f5f0f0;
+  font-weight: 600;
+  font-size: 18px;
+  margin: 0 30px;
+  transition: color 0.3s ease, transform 0.2s ease;
+  font-family:arial;
+}
+
+
 body{
-  background-color: #8fb2e1; /* light background for readability */
+  background-color: #FAF9F6; /* light background for readability */
   color: #222; /* dark text */
   font-family: 'Inter', sans-serif;
   margin: 0;
@@ -83,8 +118,8 @@ body{
 
 
 footer {
-  background-color: #1e3a8a; /* dark teal */
-  color: white;
+  background-color: #87CEEB; /* dark teal */
+  color: #0E3386;
   text-align: center;
   padding: 20px 0;
   font-size: 14px;
@@ -103,4 +138,74 @@ html, body {
 }
 main {
     flex: 1;
+}
+
+
+
+
+/* Business Listings Page */
+
+
+#business-listings-button{
+  text-decoration: none;
+  color: #f5f0f0;
+  font-weight: 600;
+  font-size: 18px;
+  margin: 0 30px;
+  transition: color 0.3s ease, transform 0.2s ease;
+  font-family:arial;
+
+
+}
+
+
+
+
+
+
+/* Business Listings */
+
+
+#listings{
+  display:flex;
+  flex-wrap:wrap;
+  gap:75px;
+  margin-left:300px;
+  margin-top:20px;
+}
+.business-card{
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 16px;
+  width: 250px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+
+.review-btn{
+  border:none;
+  border-style:solid;
+  border-color:black;
+  background-color:#87CEEB;
+  color:#0E3386;
+  border-width:1.75px;
+  border-radius:10px;
+  padding:10px;
+  transition: color, 0.15s;
+  transition:opacity, 0.15s;
+
+
+
+
+
+
+}
+.review-btn:hover{
+  color:#f5f0f0;
+
+
+}
+.review-btn:active{
+  opacity:0.6;
 }
