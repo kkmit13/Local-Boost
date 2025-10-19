@@ -8,99 +8,91 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  gap: 30px; /* adds spacing between tabs */
 }
 
-
-
-
-.HeaderTabs p a {
-  text-decoration: none;
-  color: #c0c0c0;
-  font-weight: 600;
-  font-size: 18px;
-  margin: 0 30px;
-  transition: color 0.3s ease, transform 0.2s ease;
-  font-family:arial;
-}
-
-
-.HeaderTabs p a:hover {
-  color: #ffffff;
-  transform: scale(1.1);
-}
-
-
-body{
-  background-color: #8fb2e1; /* light background for readability */
-  color: #222; /* dark text */
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-
-.Home-Message{
-  color:grey;
-  text-align:center;
-
-
-}
-
-
-
-
-
-
-.HeaderTitle{
-  text-align:center;
-  font-family:arial;
-
-
-
-
-}
-
-
-.search-div{
-    text-align: center;
-    margin-top:125px;
-   
-
-
-}
-#search-bar{
-    width:50%;
-    padding: 8px 12px;
-    font-size:16px;
-    border-radius: 10px;
-    border-style:solid;
-    border-color:black;
-    border-width:2.25px;
-
-
-}
-
-
-footer {
-  background-color: #1e3a8a; /* dark teal */
-  color: white;
-  text-align: center;
-  padding: 20px 0;
-  font-size: 14px;
-  margin-top: 265px;
-}
-
-
-
-
-/* Resizes footer to fit page */
-html, body {
-    height: 100%;
-    margin: 0;
+  .HeaderTabs {
     display: flex;
-    flex-direction: column;
-}
-main {
-    flex: 1;
-}
+    justify-content: flex-end; /* pushes all tabs to the right */
+    align-items: center;
+    background-color: #1e3a8a;
+    padding: 15px 40px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    gap: 30px; /* adds spacing between tabs */
+  }
+
+
+
+  .HeaderTabs p a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    font-size: 18px;
+    margin: 0 30px;
+    transition: color 0.3s ease, transform 0.2s ease;
+    font-family:arial;
+  }
+
+
+  .HeaderTabs p a:hover {
+    color: #ffffff;
+    transform: scale(1.1);
+  }
+
+
+  body{
+    background-color: #8fb2e1; /* light background for readability */
+    color: #222; /* dark text */
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+
+  .Home-Message{
+    color:grey;
+    text-align:center;
+
+
+  }
+
+
+
+
+
+  .HeaderTitle{
+    text-align:center;
+    font-family:arial;
+
+
+
+
+
+  }
+
+
+  .search-bar{
+    align-items:center;
+  }
+
+
+  footer {
+    background-color: #1e3a8a; /* dark teal */
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 14px;
+    margin-top: 265px;
+  }
+
+
+  .discover{
+  text-align: center;
+  font-family: Georgia;
+  color: grey;
+  align-items: center;
+  display: grid;
+  place-items: center;
+  }
