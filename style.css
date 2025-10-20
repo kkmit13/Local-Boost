@@ -222,6 +222,7 @@ main {
   border-radius: 7px;
   padding-top: 10px;
   padding-bottom: 10px;
+  align-items: center;
 }
 
 .AI-Button:hover {
@@ -231,4 +232,5 @@ main {
   text-align: center;
   font-family: Arial;
   cursor: pointer;
+  align-items: center;
 }

@@ -142,7 +142,8 @@ const LISTINGS = [
     },
     reviews: []
   }
-];
+
+];  
 
 
 // make available globally in browser (simple offline use)
