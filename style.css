@@ -54,6 +54,7 @@
   --text-primary: var(--color-almost-black);
   --text-muted: var(--color-dark-gray);
   --border: var(--color-mid-gray);
+  text-align: center;
 }
 
 /* Dark theme overrides */
@@ -182,8 +183,22 @@ main{min-height:calc(100vh - 160px)}
 }
 
 /* Buttons - use a shared base for easy tweaks */
-.btn { display: inline-block; padding: 8px 10px; border-radius: 8px; cursor: pointer; border: none; color: var(--color-white); background: var(--color-primary); }
-.AI-Button { padding: 8px 12px; border: 2px solid var(--color-primary-deep); }
+.btn { 
+  display: inline-block; padding: 8px 10px; border-radius: 8px; cursor: pointer; border: none; color: var(--color-white); background: var(--color-primary); 
+}
+
+.AI-Button { 
+  padding: 8px 12px; border: 2px solid var(--color-primary-deep); 
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 8px 12px;
+  border: 2px solid var(--color-primary-deep);
+  background: white;
+  cursor: pointer;
+  z-index: 1;
+}
 
 /* Footer */
 footer { background: var(--header-bg); color: var(--header-link); text-align: center; padding: 20px; }
