@@ -141,6 +141,31 @@ const LISTINGS = [
       sunday: []
     },
     reviews: []
+  },
+
+  {
+  id: "b6",
+    name: "Oryan Photo and Video",
+    address: "25276 Nichols Sawmill Road, Magnolia TX",
+    phone: "832-260-1238",
+    website: "https://oryanphotography.com",
+    category: "Photography",
+    rating: 5,
+    reviewCount: 600,
+    priceRange: 4,
+    openedDate: "2013-05-13",
+    shortDescription: "Photography and Videography in Weddings and other events!",
+    tags: ["photography", "videography", "weddings", "eco"],
+    photos: [],
+    hours: {
+      monday: [{ open: "09:00", close: "17:00" }],
+      tuesday: [{ open: "09:00", close: "17:00" }],
+      wednesday: [{ open: "09:00", close: "17:00" }],
+      thursday: [{ open: "09:00", close: "17:00" }],
+      friday: [{ open: "09:00", close: "17:00" }],
+      saturday: [{ open: "08:00", close: "20:00" }],
+      sunday: []
+          },
   }
 
 ];  
