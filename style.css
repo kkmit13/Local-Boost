@@ -239,7 +239,32 @@ main{min-height:calc(100vh - 160px)}
   
 }
 
-  display:inline-block {
+/* Website link styled as button inside business cards */
+.website-btn{
+  display:inline-block;
+  padding:8px 10px;
+  border-radius:8px;
+  background:var(--color-primary);
+  color:var(--color-white);
+  text-decoration:none;
+  font-weight:600;
+  border: 1px solid transparent;
+  transition:background .18s ease, box-shadow .18s ease, transform .12s ease;
+}
+.website-btn:hover{
+  background:var(--color-primary-deep);
+  box-shadow:0 6px 14px rgba(0,0,0,0.12);
+  transform:translateY(-2px);
+}
+
+.website-btn:focus{
+  outline:none;
+  box-shadow:0 0 0 3px rgba(0,119,255,0.18);
+  }
+
+/* Review button styling (improved UI) */
+.review-btn{
+  display:inline-block;
   padding:8px 12px;
   background:transparent;
   color:var(--color-primary);
@@ -248,7 +273,7 @@ main{min-height:calc(100vh - 160px)}
   font-weight:600;
   cursor:pointer;
   transition: background .18s ease, color .18s ease, transform .12s ease, box-shadow .12s ease;
-  }
+}
 .review-btn:hover{
   background:var(--color-primary);
   color:var(--color-white);
@@ -256,3 +281,30 @@ main{min-height:calc(100vh - 160px)}
   box-shadow:0 6px 14px rgba(0,0,0,0.12);
 }
 .review-btn:focus{ outline:none; box-shadow:0 0 0 3px rgba(0,119,255,0.18); }
+
+
+/* Footer */
+footer { background: var(--header-bg); color: var(--header-link); text-align: center; padding: 20px; }
+
+/* Responsive */
+@media (max-width:800px){
+  #search-bar{width:90%}
+  .HeaderTabs{padding:10px}
+  .HeaderTabs #title-text{display:none}
+}
+
+.logo-container {
+  position: absolute; 
+  top: 0;
+  left: 0;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 20px;
+}
+
+.logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+}
