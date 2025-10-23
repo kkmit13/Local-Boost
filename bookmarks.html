@@ -43,6 +43,62 @@
 		<center>
 		    <a href="bookmarks.html">Go to the top</a>
 		</center>
+		
+  <h1>Bookmark Manager</h1>
+
+  <input type="text" id="bookmarkName" placeholder="Bookmark Name">
+  <input type="url" id="bookmarkURL" placeholder="Bookmark URL">
+  <button onclick="addBookmark()">Add Bookmark</button>
+
+  <h2>Your Bookmarks</h2>
+  <ul id="bookmarkList"></ul>
+
+  <script>
+    // Load bookmarks from localStorage or create empty array
+    let bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+
+    // Function to display bookmarks
+    function displayBookmarks() {
+      const list = document.getElementById('bookmarkList');
+      list.innerHTML = '';
+      bookmarks.forEach((bookmark, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <a href="${bookmark.url}" target="_blank">${bookmark.name}</a>
+          <button class="delete" onclick="deleteBookmark(${index})">Delete</button>
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    // Function to add a bookmark
+    function addBookmark() {
+      const name = document.getElementById('bookmarkName').value.trim();
+      const url = document.getElementById('bookmarkURL').value.trim();
+
+      if (!name || !url) {
+        alert('Please enter both a name and URL.');
+        return;
+      }
+
+      bookmarks.push({ name, url });
+      localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+      document.getElementById('bookmarkName').value = '';
+      document.getElementById('bookmarkURL').value = '';
+      displayBookmarks();
+    }
+
+    // Function to delete a bookmark
+    function deleteBookmark(index) {
+      bookmarks.splice(index, 1);
+      localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+      displayBookmarks();
+    }
+
+    // Initial display
+    displayBookmarks();
+  </script>
+
 	</main>
 
 	<footer>
@@ -50,5 +106,6 @@
 	</footer>
 
 	<script src="app.js"></script>
+
 </body>
 </html>
