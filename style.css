@@ -183,6 +183,7 @@ main{min-height:calc(100vh - 160px)}
   border-radius: 10px;
   width: 260px;
   align-items: center;
+  justify-content: center;
 }
 
 /* Buttons - use a shared base for easy tweaks */
