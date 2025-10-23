@@ -55,7 +55,7 @@
             <p>${business.address}</p>
             <p>Rating: ${business.rating} (${business.reviewCount} reviews)</p>
             <p>Price Range: ${"$".repeat(business.priceRange)}</p>
-            <p><a href="${business.website}" target="_blank" rel="noopener">Website</a></p>
+            <p><a class="website-btn" href="${business.website}" target="_blank" rel="noopener">Website</a></p>
             <button class="review-btn">Leave a Review</button>
             <hr>
           `;
@@ -75,5 +75,6 @@
   <footer>
         <p>&copy; 2025 LocalLink — Empowering local connections.</p>
   </footer>
+  <script src="app.js"></script>
 </body>
 </html>
