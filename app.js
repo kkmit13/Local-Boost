@@ -1,5 +1,5 @@
 // app.js — bookmark persistence + wiring
-// Requires: If you want names/details on every page, include sample.js BEFORE this file.
+// Requires: If you want names/details on every page, include SampleData.js BEFORE this file.
 
 
 const STORAGE_KEY = 'locallink_bookmarks_v1';
@@ -123,7 +123,7 @@ function attachCheckboxListeners() {
 
 // --- Initialization wiring ---
 document.addEventListener('DOMContentLoaded', () => {
-  // If we have LISTINGS loaded (sample.js), restore flags into it
+  // If we have LISTINGS loaded (SampleData.js), restore flags into it
   if (typeof LISTINGS !== 'undefined') {
     restoreSavedToListings();
   }
