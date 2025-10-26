@@ -1,10 +1,3 @@
-/**
- * sample.js — simple display-only listings for offline browser use.
- * Just include this in your HTML with: <script src="sample.js"></script>
- * Then use the global `LISTINGS` array.
- */
-
-
 const LISTINGS = [
   {
     id: "b1",
@@ -15,11 +8,11 @@ const LISTINGS = [
     category: "Cafe",
     rating: 4.6,
     reviewCount: 312,
-    priceRange: 2,                     // 1 = $, 2 = $$, 3 = $$$
-    openedDate: "2014-06-01",          // optional, for display like "Est. 2014"
+    priceRange: 2,
+    openedDate: "2014-06-01",
     shortDescription: "Cozy cafe with specialty coffee, pastries and free Wi-Fi.",
     tags: ["coffee", "breakfast", "wifi", "pet-friendly"],
-    photos: [],                         // fill with URLs later if you want
+    photos: [],
     hours: {
       monday: [{ open: "07:00", close: "16:00" }],
       tuesday: [{ open: "07:00", close: "16:00" }],
@@ -29,10 +22,14 @@ const LISTINGS = [
       saturday: [{ open: "08:00", close: "18:00" }],
       sunday: []
     },
-    // short sample review objects (optional)
     reviews: [
       { id: "r1", userName: "Ava", rating: 5, text: "Great cappuccino!", date: "2025-05-01" }
-    ]
+    ],
+    bookmarked: false,
+    deal: {
+      description: "Free pastry with any coffee (Mon–Fri).",
+      expires: "2025-12-31"
+    }
   },
 
 
@@ -59,7 +56,12 @@ const LISTINGS = [
       saturday: [{ open: "11:00", close: "20:00" }],
       sunday: [{ open: "11:00", close: "17:00" }]
     },
-    reviews: []
+    reviews: [],
+    bookmarked: false,
+    deal: {
+      description: "10% off purchases over $20 (in-store).",
+      expires: "2025-11-30"
+    }
   },
 
 
@@ -86,7 +88,8 @@ const LISTINGS = [
       saturday: [{ open: "08:00", close: "18:00" }],
       sunday: [{ open: "08:00", close: "18:00" }]
     },
-    reviews: []
+    reviews: [],
+    bookmarked: false
   },
 
 
@@ -113,7 +116,8 @@ const LISTINGS = [
       saturday: [{ open: "00:00", close: "23:59" }],
       sunday: [{ open: "00:00", close: "23:59" }]
     },
-    reviews: []
+    reviews: [],
+    bookmarked: false
   },
 
 
@@ -140,35 +144,14 @@ const LISTINGS = [
       saturday: [{ open: "08:00", close: "17:00" }],
       sunday: []
     },
-    reviews: []
-  },
-
-  {
-  id: "b6",
-    name: "Oryan Photo and Video",
-    address: "25276 Nichols Sawmill Road, Magnolia TX",
-    phone: "832-260-1238",
-    website: "https://oryanphotography.com",
-    category: "Photography",
-    rating: 5,
-    reviewCount: 600,
-    priceRange: 4,
-    openedDate: "2013-05-13",
-    shortDescription: "Photography and Videography in Weddings and other events!",
-    tags: ["photography", "videography", "weddings", "eco"],
-    photos: [],
-    hours: {
-      monday: [{ open: "09:00", close: "17:00" }],
-      tuesday: [{ open: "09:00", close: "17:00" }],
-      wednesday: [{ open: "09:00", close: "17:00" }],
-      thursday: [{ open: "09:00", close: "17:00" }],
-      friday: [{ open: "09:00", close: "17:00" }],
-      saturday: [{ open: "08:00", close: "20:00" }],
-      sunday: []
-          },
+    reviews: [],
+    bookmarked: false,
+    deal: {
+      description: "20% off first visit (new customers).",
+      expires: "2026-01-31"
+    }
   }
-
-];  
+];
 
 
 // make available globally in browser (simple offline use)
