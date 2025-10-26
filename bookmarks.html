@@ -1,113 +1,53 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>LocalLink — Bookmarks</title>
-	<link rel="stylesheet" href="style.css">
-	<meta name="description" content="Saved businesses and favorites on LocalBoost">
-	<meta name="author" content="LocalBoost Team">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LocalLink — Bookmarks</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="Saved businesses and favorites on LocalBoost">
+  <meta name="author" content="LocalBoost Team">
 </head>
 <body>
-	<header>
-	  <nav>
-			<div class="HeaderTabs">
-<div class="logo-container">
-              <img src="favicon.ico" alt="LocalLink Logo" class="logo-img">
-            </div>
-				<p><a href="index.html" id="home-tab-btn">Home</a></p>
-				<p><a href="BusinessListing.html">Business Listings</a></p>
-				<p><a href="bookmarks.html" id="bookmarks-tab-btn">Bookmarks</a></p>
-				<p><a href="deals.html" id="deals-tab-btn">Deals</a></p>
-				<div class="theme-toggle">
-				  <input type="checkbox" id="theme-switch" aria-label="Toggle dark mode">
-				  <label for="theme-switch" class="toggle-label"><span class="toggle-ball"><span class="icon-sun">☀️</span><span class="icon-moon">🌙</span></span></label>
-				</div>
-			</div>
+  <header>
+    <nav>
+      <div class="HeaderTabs">
+        <p><a href="index.html">Home</a></p>
+        <p><a href="BusinessListing.html" id="business-listings-button-bookmarks">Business Listings</a></p>
+        <p><a href="bookmarks.html" id="bookmarks-tab-btn">Bookmarks</a></p>
+        <p><a href="deals.html" id="deals-tab-btn">Deals</a></p>
+      </div>
+    </nav>
 
-		</nav>
 
-		<h1 class="HeaderTitle">LocalLink — Bookmarks</h1>
-	</header>
+    <h1 class="HeaderTitle">LocalBoost — Bookmarks</h1>
+  </header>
 
-	<main>
-		<section id="bookmarks-section">
-			<h2>Your Saved Businesses</h2>
-			<p class="Home-Message">This page will display businesses you have bookmarked. No bookmarks yet — start browsing on the <a href="index.html">home page</a> to save favorites.</p>
-			<div id="bookmarked-businesses">
-			</div>
-		</section>
-		
-	<div class="Bookmark-Manager"
-  <h1>Bookmark Manager</h1>
 
-  <input type="text" id="bookmarkName" placeholder="Bookmark Name">
-  <input type="url" id="bookmarkURL" placeholder="Bookmark URL">
-  <button onclick="addBookmark()">Add Bookmark</button>
+  <main>
+    <section id="bookmarks-section">
+      <h2>Your Saved Businesses</h2>
+      <p class="Home-Message">This page will display businesses you have bookmarked. No bookmarks yet — start browsing on the <a href="index.html">home page</a> to save favorites.</p>
+      <div id="bookmarked-businesses"></div>
+    </section>
+  </main>
 
-  <h2>Your Bookmarks</h2>
-  <ul id="bookmarkList"></ul>
 
-  <script>
-    // Load bookmarks from localStorage or create empty array
-    let bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
 
-    // Function to display bookmarks
-    function displayBookmarks() {
-      const list = document.getElementById('bookmarkList');
-      list.innerHTML = '';
-      bookmarks.forEach((bookmark, index) => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <a href="${bookmark.url}" target="_blank">${bookmark.name}</a>
-          <button class="delete" onclick="deleteBookmark(${index})">Delete</button>
-        `;
-        list.appendChild(li);
-      });
-    }
 
-    // Function to add a bookmark
-    function addBookmark() {
-      const name = document.getElementById('bookmarkName').value.trim();
-      const url = document.getElementById('bookmarkURL').value.trim();
 
-      if (!name || !url) {
-        alert('Please enter both a name and URL.');
-        return;
-      }
 
-      bookmarks.push({ name, url });
-      localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-      document.getElementById('bookmarkName').value = '';
-      document.getElementById('bookmarkURL').value = '';
-      displayBookmarks();
-    }
 
-    // Function to delete a bookmark
-    function deleteBookmark(index) {
-      bookmarks.splice(index, 1);
-      localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-      displayBookmarks();
-    }
 
-    // Initial display
-    displayBookmarks();
-  </script>
-  </div>
 
-	</main>
 
-  <center>
-		    <a href="bookmarks.html">Go to top</a>
-		</center>
 
-	<footer>
-		    <p>&copy; 2025 LocalLink — Empowering local connections.</p>
-	</footer>
 
-	<script src="app.js"></script>
+  <footer>
+  </footer>
 
+
+  <script src="sample.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

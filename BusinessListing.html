@@ -1,84 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LocalLink - Business Listings</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Business Listings - LocalLink</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
     <nav>
       <div class="HeaderTabs">
-        <div class="logo-container">
-              <img src="favicon.ico" alt="LocalLink Logo" class="logo-img">
-            </div>
         <p><a href="index.html" id="home-tab-btn">Home</a></p>
         <p><a href="BusinessListing.html" id="business-listings-button">Business Listings</a></p>
-        <p><a href="bookmarks.html" id="bookmarks-tab-btn">Bookmarks</a></p>
+        <p><a href="bookmarks.html" id="bookmarks-tab-btn-business">Bookmarks</a></p>
         <p><a href="deals.html" id="deals-tab-btn">Deals</a></p>
-        <div class="theme-toggle">
-          <input type="checkbox" id="theme-switch" aria-label="Toggle dark mode">
-          <label for="theme-switch" class="toggle-label"><span class="toggle-ball"><span class="icon-sun">☀️</span><span class="icon-moon">🌙</span></span></label>
-        </div>
       </div>
     </nav>
   </header>
 
 
   <main>
-    <center>
+    <h1 style="text-align:center; margin-top:18px;">Business Listings</h1>
+
+
+    <!-- where listing cards will be added -->
     <div id="listings"></div>
 
 
-   
-    <script src="SampleData.js"></script>
+    <!-- Bookmarks area (on this page only — no persistence yet) -->
+    <section style="margin-top:30px;">
+      <h2>Bookmarked Businesses</h2>
+      <div id="bookmarked-businesses"></div>
+    </section>
+
+
+    <!-- Load your data file BEFORE the inline script below -->
+    <!-- If your file is named SampleData.js, change the src accordingly. -->
+    <script src="sample.js"></script>
+
 
     <script>
+      // Inline render + bookmarking (no persistence)
+      // Kept comments and simple style as requested.
+
+
       document.addEventListener('DOMContentLoaded', () => {
         const container = document.getElementById("listings");
+        const bookmarksContainer = document.getElementById("bookmarked-businesses");
 
-        // Defensive: if SampleData hasn't loaded or LISTINGS is missing, show a message
-        if (!window.LISTINGS || !Array.isArray(window.LISTINGS)) {
-          container.innerHTML = '<p>No listings available. Make sure SampleData.js is included.</p>';
-          return;
+
+        // Render bookmarks area by reading LISTINGS[*].bookmarked
+        function renderBookmarks() {
+          if (!bookmarksContainer) return;
+          bookmarksContainer.innerHTML = '';
+          LISTINGS.filter(b => b.bookmarked).forEach(business => {
+            const div = document.createElement('div');
+            div.className = 'business-card small';
+            div.innerHTML = `<h3>${business.name}</h3><p>${business.shortDescription || business.category || ''}</p>`;
+            bookmarksContainer.appendChild(div);
+          });
+          // show message if none
+          if (bookmarksContainer.children.length === 0) {
+            bookmarksContainer.innerHTML = '<p>No bookmarks yet. Click "Save" on a listing to add it.</p>';
+          }
         }
 
-        // Render each business into a card
-        window.LISTINGS.forEach(business => {
+
+        // clear container (in case)
+        container.innerHTML = '';
+
+
+        // It iterates the Listings object inside of an element using an arrow function and defines something called business
+        LISTINGS.forEach(business => {
+          // Creates a div called card, gives it the name business-card
           const card = document.createElement("div");
           card.classList.add("business-card");
 
+
+          // Runs the object from the sample data inside of the card, adding these elements
           card.innerHTML = `
             <h2>${business.name}</h2>
-            <p class="muted">${business.category}</p>
-            <p>${business.address}</p>
-            <p>Rating: ${business.rating} (${business.reviewCount} reviews)</p>
-            <p><a class="website-btn" href="${business.website}" target="_blank" rel="noopener">Website</a></p>
+            <p>${business.category}</p>
+            <p>${business.address || ''}</p>
+            <p>Rating: ${business.rating} (${business.reviewCount || 0} reviews)</p>
+            <p>Price Range: ${"$".repeat(business.priceRange || 0)}</p>
+            <p>${business.website ? `<a href="${business.website}" target="_blank" rel="noopener">${business.website}</a>` : ''}</p>
             <button class="review-btn">Leave a Review</button>
+            <label class="bookmark-toggle">
+              <!-- dynamic data-id so JS knows which business this checkbox belongs to -->
+              <input type="checkbox" class="bookmark-checkbox" data-id="${business.id}">
+              <span class="checkmark"></span>
+            </label>
             <hr>
           `;
 
+
+          // append card to DOM
           container.appendChild(card);
+
+
+          // Add event listener for this checkbox (closure captures `business`)
+          const checkbox = card.querySelector('.bookmark-checkbox');
+          checkbox.addEventListener('change', () => {
+            business.bookmarked = checkbox.checked; // update property
+            if (checkbox.checked) {
+              console.log(`Bookmarked: ${business.name}`);
+            } else {
+              console.log(`Removed bookmark: ${business.name}`);
+            }
+            renderBookmarks(); // refresh bookmarks display on this page
+          });
         });
+
+
+        // Optional: show any pre-bookmarked items on first load
+        renderBookmarks();
       });
+
+
+     
     </script>
-    </center>
-
-
-    <center>
-    <a href="BusinessListing.html">Go to the top</a>
-    </center>
   </main>
 
 
   <footer>
-        <p>&copy; 2025 LocalLink — Empowering local connections.</p>
+    <p>&copy; 2025 LocalLink</p>
   </footer>
 
+
+
+
   <script src="app.js"></script>
-
-
 </body>
 </html>
