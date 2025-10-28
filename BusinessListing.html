@@ -32,8 +32,23 @@
 
 
   <main>
-    <h1 style="text-align:center; margin-top:18px;">Business Listings/Bookmarks</h1>
+    <h1 style="text-align:center; margin-top:18px;">Business Listings</h1>
     <p>This will be the business listings page with different businesses near you! Click on the checkbox to save and bookmark a business card!</p>
+    <div class="deals-bar">
+        		<input type="text" placeholder="Search Business Listings..." id="search-bar">
+		    </div>
+    <br>
+    <br>
+    <button class="bookmark-button" onclick="scrollToBottom()">Go to Bookmarks</button>
+  <script>
+    function scrollToBottom() {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+      });
+    }
+  </script>
+    <br>
 
 
     <!-- where listing cards will be added -->
@@ -134,6 +149,9 @@
      
     </script>
   </main>
+
+  <br>
+  <br>
 
   <center>
     <a href="BusinessListing.html">Go back to top</a>

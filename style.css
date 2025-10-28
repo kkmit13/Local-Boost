@@ -177,14 +177,24 @@ main{min-height:calc(100vh - 160px)}
   text-align: left;
 }
 .business-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  padding: 16px;
-  border-radius: 10px;
-  width: 260px;
-  align-items: center;
-  justify-content: center;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
+
+.business-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 40px;
+}
+
 
 /* Buttons - use a shared base for easy tweaks */
 .btn { 
@@ -309,4 +319,65 @@ footer { background: var(--header-bg); color: var(--header-link); text-align: ce
   object-fit: contain;
   display: block;
 }
+
+.deal-card {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.deal-card:hover {
+  transform: scale(1.03);
+}
+
+.deal-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 10px;
+  transition: background 0.3s;
+}
+
+.deal-btn:hover {
+  background-color: #0056d2;
+}
+
+.deals-bar{
+.search-div { text-align: center;}
+#search-bar {
+  width: 60%;
+  max-width: 720px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text-primary);
+}
+}
+
+.bookmark-button{
+  display:inline-block;
+  padding:8px 12px;
+  background:transparent;
+  color:var(--color-primary);
+  border:2px solid var(--color-primary);
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+  transition: background .18s ease, color .18s ease, transform .12s ease, box-shadow .12s ease;
+}
+.bookmark-button:hover{
+  background:var(--color-primary);
+  color:var(--color-white);
+  transform:translateY(-2px);
+  box-shadow:0 6px 14px rgba(0,0,0,0.12);
+}
+.bookmark-button:focus{ outline:none; box-shadow:0 0 0 3px rgba(0,119,255,0.18); }
+
+
 
