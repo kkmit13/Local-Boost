@@ -3,24 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Business Listings - LocalLink</title>
+  <title>Business Listings|LocalLink</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
     <nav>
-      <div class="HeaderTabs">
-        <p><a href="index.html" id="home-tab-btn">Home</a></p>
-        <p><a href="BusinessListing.html" id="business-listings-button">Business Listings</a></p>
-        <p><a href="bookmarks.html" id="bookmarks-tab-btn-business">Bookmarks</a></p>
-        <p><a href="deals.html" id="deals-tab-btn">Deals</a></p>
-      </div>
+            <nav>
+            <div class="HeaderTabs">
+              <div class="logo-container">
+              <img src="favicon.ico" alt="LocalLink Logo" class="logo-img">
+            </div>
+
+                <p><a href="index.html" id="home-tab-btn">Home</a></p>
+                <p><a href="BusinessListing.html" id="business-listings-button">Business Listing</a></p>
+                <p><a href="deals.html" id="deals-tab-btn">Deals</a></p>
+                <div class="theme-toggle">
+                  <input type="checkbox" id="theme-switch" aria-label="Toggle dark mode">
+                  <label for="theme-switch" class="toggle-label"><span class="toggle-ball"><span class="icon-sun">☀️</span><span class="icon-moon">🌙</span></span></label>
+                </div>
+            </div>
+
+
+        </nav>
+
     </nav>
   </header>
 
 
   <main>
-    <h1 style="text-align:center; margin-top:18px;">Business Listings</h1>
+    <h1 style="text-align:center; margin-top:18px;">Business Listings/Bookmarks</h1>
+    <p>This will be the business listings page with different businesses near you! Click on the checkbox to save and bookmark a business card!</p>
 
 
     <!-- where listing cards will be added -->
@@ -29,7 +42,7 @@
 
     <!-- Bookmarks area (on this page only — no persistence yet) -->
     <section style="margin-top:30px;">
-      <h2>Bookmarked Businesses</h2>
+      <h2>------------------------------------------------------------Bookmarked Businesses------------------------------------------------------------</h2>
       <div id="bookmarked-businesses"></div>
     </section>
 
@@ -121,6 +134,10 @@
      
     </script>
   </main>
+
+  <center>
+    <a href="BusinessListing.html">Go back to top</a>
+  </center>
 
 
   <footer>
