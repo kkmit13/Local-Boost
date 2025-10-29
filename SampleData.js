@@ -150,7 +150,162 @@ const LISTINGS = [
       description: "20% off first visit (new customers).",
       expires: "2026-01-31"
     }
+  },
+
+  {
+  id: "b6",
+  name: "The Daily Grind Coffee",
+  address: "901 Maple Ave, Austin, TX 78702",
+  phone: "(512) 555-0666",
+  website: "https://dailygrind.example.com",
+  category: "Cafe",
+  rating: 4.7,
+  reviewCount: 288,
+  priceRange: 2,
+  openedDate: "2018-03-12",
+  shortDescription: "Cozy neighborhood cafe known for its artisan coffee and fresh pastries.",
+  tags: ["coffee", "bakery", "breakfast", "local"],
+  photos: [],
+  hours: {
+    monday: [{ open: "07:00", close: "17:00" }],
+    tuesday: [{ open: "07:00", close: "17:00" }],
+    wednesday: [{ open: "07:00", close: "17:00" }],
+    thursday: [{ open: "07:00", close: "17:00" }],
+    friday: [{ open: "07:00", close: "17:00" }],
+    saturday: [{ open: "08:00", close: "15:00" }],
+    sunday: []
+  },
+  reviews: [],
+  bookmarked: false,
+  deal: {
+    description: "Buy one latte, get one 50% off.",
+    expires: "2026-02-28"
   }
+  },
+
+{
+  id: "b7",
+  name: "Luna Yoga Studio",
+  address: "2300 W 5th St, Austin, TX 78703",
+  phone: "(512) 555-0777",
+  website: "https://lunayoga.example.com",
+  category: "Fitness",
+  rating: 4.9,
+  reviewCount: 412,
+  priceRange: 3,
+  openedDate: "2017-10-01",
+  shortDescription: "Peaceful yoga studio offering daily classes and mindfulness workshops.",
+  tags: ["yoga", "wellness", "fitness", "studio"],
+  photos: [],
+  hours: {
+    monday: [{ open: "06:00", close: "20:00" }],
+    tuesday: [{ open: "06:00", close: "20:00" }],
+    wednesday: [{ open: "06:00", close: "20:00" }],
+    thursday: [{ open: "06:00", close: "20:00" }],
+    friday: [{ open: "06:00", close: "19:00" }],
+    saturday: [{ open: "08:00", close: "14:00" }],
+    sunday: [{ open: "08:00", close: "14:00" }]
+  },
+  reviews: [],
+  bookmarked: false,
+  deal: {
+    description: "First class free for new students.",
+    expires: "2026-04-01"
+  }
+},
+
+{
+  id: "b8",
+  name: "TechFix Mobile Repair",
+  address: "611 Congress Ave, Austin, TX 78701",
+  phone: "(512) 555-0888",
+  website: "https://techfix.example.com",
+  category: "Electronics Repair",
+  rating: 4.4,
+  reviewCount: 95,
+  priceRange: 2,
+  openedDate: "2019-06-15",
+  shortDescription: "Quick and affordable phone and tablet repair with same-day service.",
+  tags: ["electronics", "repair", "mobile", "tech"],
+  photos: [],
+  hours: {
+    monday: [{ open: "09:00", close: "18:00" }],
+    tuesday: [{ open: "09:00", close: "18:00" }],
+    wednesday: [{ open: "09:00", close: "18:00" }],
+    thursday: [{ open: "09:00", close: "18:00" }],
+    friday: [{ open: "09:00", close: "18:00" }],
+    saturday: [{ open: "10:00", close: "15:00" }],
+    sunday: []
+  },
+  reviews: [],
+  bookmarked: false,
+  deal: {
+    description: "Free screen protector with any phone repair.",
+    expires: "2026-03-31"
+  }
+},
+
+{
+  id: "b9",
+  name: "Bloom & Vine Florist",
+  address: "4100 N Lamar Blvd, Austin, TX 78756",
+  phone: "(512) 555-0999",
+  website: "https://bloomandvine.example.com",
+  category: "Florist",
+  rating: 4.8,
+  reviewCount: 175,
+  priceRange: 3,
+  openedDate: "2015-02-14",
+  shortDescription: "Boutique florist crafting elegant arrangements for all occasions.",
+  tags: ["florist", "flowers", "gifts", "weddings"],
+  photos: [],
+  hours: {
+    monday: [{ open: "09:00", close: "18:00" }],
+    tuesday: [{ open: "09:00", close: "18:00" }],
+    wednesday: [{ open: "09:00", close: "18:00" }],
+    thursday: [{ open: "09:00", close: "18:00" }],
+    friday: [{ open: "09:00", close: "18:00" }],
+    saturday: [{ open: "09:00", close: "15:00" }],
+    sunday: []
+  },
+  reviews: [],
+  bookmarked: false,
+  deal: {
+    description: "10% off Valentine’s Day preorders.",
+    expires: "2026-02-14"
+  }
+},
+
+{
+  id: "b10",
+  name: "Trailside Bistro",
+  address: "1620 Barton Springs Rd, Austin, TX 78704",
+  phone: "(512) 555-0100",
+  website: "https://trailsidebistro.example.com",
+  category: "Restaurant",
+  rating: 4.6,
+  reviewCount: 389,
+  priceRange: 3,
+  openedDate: "2020-08-22",
+  shortDescription: "Modern bistro offering fresh local dishes and outdoor seating by the trail.",
+  tags: ["restaurant", "bistro", "local", "outdoor"],
+  photos: [],
+  hours: {
+    monday: [{ open: "11:00", close: "22:00" }],
+    tuesday: [{ open: "11:00", close: "22:00" }],
+    wednesday: [{ open: "11:00", close: "22:00" }],
+    thursday: [{ open: "11:00", close: "22:00" }],
+    friday: [{ open: "11:00", close: "23:00" }],
+    saturday: [{ open: "10:00", close: "23:00" }],
+    sunday: [{ open: "10:00", close: "21:00" }]
+  },
+  reviews: [],
+  bookmarked: false,
+  deal: {
+    description: "Free dessert with any entrée after 8 PM.",
+    expires: "2026-05-15"
+  }
+}
 ];
 
 
