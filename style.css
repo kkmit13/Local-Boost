@@ -184,9 +184,14 @@ main{min-height:calc(100vh - 160px)}
   align-items: center;
   justify-content: center;
   margin-right: 40px;
-  transform: translateX(80px);
+  transform: translateX(150px);
+  flex-wrap:wrap;
+  padding: 20px;
+  width: 100%;
+  max-width: 320px; /* ✅ keeps cards uniform */
+  box-sizing: border-box; /* ✅ prevents padding from adding overflow */
+  overflow: hidden; /* ✅ hides anything that spills out */
 }
-
 .business-card:hover {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   border-color: #007bff; /* optional border color change */
