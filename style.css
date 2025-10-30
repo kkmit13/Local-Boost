@@ -384,5 +384,50 @@ footer { background: var(--header-bg); color: var(--header-link); text-align: ce
 }
 .bookmark-button:focus{ outline:none; box-shadow:0 0 0 3px rgba(0,119,255,0.18); }
 
+/* AI Review Analysis Styles */
+.analysis-box { 
+  margin-top: 10px; 
+  background: #f7fbff; 
+  border-radius: 8px; 
+  padding: 10px; 
+  font-size: 0.95rem; 
+  display: none; 
+  border: 1px solid #d1e3ff;
+}
+.analyze-btn { 
+  background: #2563eb; 
+  color: white; 
+  border: 0; 
+  padding: 6px 10px; 
+  border-radius: 8px; 
+  cursor: pointer; 
+  font-size: 0.9rem;
+  margin-right: 5px;
+}
+.analyze-btn:hover {
+  background: #1d4ed8;
+}
+.keyword-chip { 
+  display: inline-block; 
+  background: #e6f0ff; 
+  padding: 4px 8px; 
+  margin: 3px; 
+  border-radius: 999px; 
+  font-size: 0.85rem; 
+  color: #1e40af;
+}
+.analysis-summary {
+  margin-bottom: 8px;
+  font-style: italic;
+  color: #374151;
+}
+.analysis-sentiment {
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.sentiment-positive { color: #059669; }
+.sentiment-negative { color: #dc2626; }
+.sentiment-neutral { color: #6b7280; }
+
 
 

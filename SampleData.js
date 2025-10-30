@@ -23,7 +23,11 @@ const LISTINGS = [
       sunday: []
     },
     reviews: [
-      { id: "r1", userName: "Ava", rating: 5, text: "Great cappuccino!", date: "2025-05-01" }
+      { id: "r1", userName: "Ava", rating: 5, text: "Great cappuccino! The atmosphere is cozy and perfect for working. Staff is super friendly.", date: "2025-05-01" },
+      { id: "r2", userName: "Marcus", rating: 4, text: "Good coffee and excellent pastries. The wifi is fast and reliable. Only downside is it can get crowded during lunch.", date: "2025-06-15" },
+      { id: "r3", userName: "Sofia", rating: 5, text: "Love this place! Best croissants in town. The baristas are friendly and remember your order. Very pet-friendly atmosphere.", date: "2025-07-22" },
+      { id: "r4", userName: "James", rating: 4, text: "Nice cafe with great coffee. The seating is comfortable and there's plenty of natural light. Sometimes the service can be slow when busy.", date: "2025-08-03" },
+      { id: "r5", userName: "Emma", rating: 5, text: "Amazing local spot! Fresh coffee, delicious breakfast sandwiches, and the staff makes you feel welcome. Highly recommend!", date: "2025-09-10" }
     ],
     bookmarked: false,
     deal: {
@@ -56,7 +60,12 @@ const LISTINGS = [
       saturday: [{ open: "11:00", close: "20:00" }],
       sunday: [{ open: "11:00", close: "17:00" }]
     },
-    reviews: [],
+    reviews: [
+      { id: "r6", userName: "Oliver", rating: 5, text: "Wonderful independent bookstore! Great selection of fiction and the staff recommendations are always excellent. Love the author events they host.", date: "2025-05-20" },
+      { id: "r7", userName: "Charlotte", rating: 5, text: "Best bookstore in the area. Curated collection is fantastic and the staff really knows their books. Cozy reading nook in the back is perfect.", date: "2025-06-30" },
+      { id: "r8", userName: "Liam", rating: 4, text: "Good selection and friendly staff. Prices are reasonable. Wish they had more parking but the quality makes up for it.", date: "2025-07-14" },
+      { id: "r9", userName: "Mia", rating: 5, text: "Amazing place for book lovers! They have a great children's section too. The monthly book club is wonderful.", date: "2025-08-25" }
+    ],
     bookmarked: false,
     deal: {
       description: "10% off purchases over $20 (in-store).",
@@ -88,7 +97,12 @@ const LISTINGS = [
       saturday: [{ open: "08:00", close: "18:00" }],
       sunday: [{ open: "08:00", close: "18:00" }]
     },
-    reviews: [],
+    reviews: [
+      { id: "r10", userName: "Ethan", rating: 4, text: "Good yoga classes with experienced instructors. The hot yoga room is excellent. Can get crowded during evening classes.", date: "2025-06-05" },
+      { id: "r11", userName: "Isabella", rating: 3, text: "Decent studio but a bit overpriced. The instructors are good but the locker rooms could be cleaner.", date: "2025-07-18" },
+      { id: "r12", userName: "Noah", rating: 5, text: "Love this studio! Great variety of classes and the meditation sessions are wonderful. Very welcoming atmosphere for beginners.", date: "2025-08-12" },
+      { id: "r13", userName: "Ava", rating: 3, text: "The classes are good but it's expensive and they keep raising prices. Also gets too hot sometimes.", date: "2025-09-20" }
+    ],
     bookmarked: false
   },
 
@@ -116,7 +130,12 @@ const LISTINGS = [
       saturday: [{ open: "00:00", close: "23:59" }],
       sunday: [{ open: "00:00", close: "23:59" }]
     },
-    reviews: [],
+    reviews: [
+      { id: "r14", userName: "William", rating: 5, text: "Excellent service! They came out for an emergency late at night and fixed our burst pipe quickly. Professional and fairly priced.", date: "2025-05-28" },
+      { id: "r15", userName: "Grace", rating: 4, text: "Good work but a bit expensive. They were prompt and professional though. Would use again.", date: "2025-07-09" },
+      { id: "r16", userName: "Henry", rating: 2, text: "Disappointed with the service. They fixed the problem but charged way more than the estimate. Not happy with the billing.", date: "2025-08-15" },
+      { id: "r17", userName: "Luna", rating: 5, text: "Best plumbers in town! Fast, reliable, and honest. They explained everything and didn't try to upsell unnecessary services.", date: "2025-09-22" }
+    ],
     bookmarked: false
   },
 
@@ -144,7 +163,12 @@ const LISTINGS = [
       saturday: [{ open: "08:00", close: "17:00" }],
       sunday: []
     },
-    reviews: [],
+    reviews: [
+      { id: "r18", userName: "Sophia", rating: 5, text: "Love this salon! They use all eco-friendly products and my hair looks amazing. The stylists are talented and really listen to what you want.", date: "2025-06-12" },
+      { id: "r19", userName: "Jackson", rating: 5, text: "Great haircuts and friendly staff. Reasonable prices for the quality. Very clean and modern space.", date: "2025-07-25" },
+      { id: "r20", userName: "Ella", rating: 4, text: "Good salon with nice atmosphere. The cut was excellent but took longer than expected. Still recommend it.", date: "2025-08-30" },
+      { id: "r21", userName: "Lucas", rating: 5, text: "Best salon experience! The staff is professional and the eco-friendly approach is a huge plus. My hair has never looked better.", date: "2025-10-01" }
+    ],
     bookmarked: false,
     deal: {
       description: "20% off first visit (new customers).",
