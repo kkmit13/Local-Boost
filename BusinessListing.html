@@ -112,7 +112,12 @@
             <p>${business.address || ''}</p>
             <p>Rating: ${business.rating} (${business.reviewCount || 0} reviews)</p>
             <p>Price Range: ${"$".repeat(business.priceRange || 0)}</p>
-            <p>${business.website ? `<a href="${business.website}" target="_blank" rel="noopener">${business.website}</a>` : ''}</p>
+            <button 
+            class="review-btn" 
+            onclick="window.open('${business.website}', '_blank', 'noopener')"
+            >
+            Visit Website
+            </button>
             <button class="review-btn">Leave a Review</button>
             <label class="bookmark-toggle">
               <!-- dynamic data-id so JS knows which business this checkbox belongs to -->
@@ -121,6 +126,7 @@
             </label>
             <hr>
           `;
+            
 
 
           // append card to DOM
