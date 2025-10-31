@@ -51,7 +51,17 @@
         </section>
 
         <div>
-        <button class="AI-Button" onclick="window.location.href = 'LocalLink-AI.py';">Explore with AI</button>
+        <button class="AI-Button" id="ai-explore-btn">🤖 Explore with AI</button>
+        </div>
+
+        <!-- AI Recommendations Modal -->
+        <div id="ai-recommendations-modal" style="display:none;">
+          <div class="ai-modal-content">
+            <span class="ai-close-btn">&times;</span>
+            <h2>🤖 AI-Powered Recommendations</h2>
+            <p class="ai-subtitle">Based on your bookmarks and browsing preferences</p>
+            <div id="ai-recommendations-container"></div>
+          </div>
         </div>
 
         
@@ -94,6 +104,7 @@
 
 
    
+    <script src="SampleData.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

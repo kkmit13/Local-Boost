@@ -175,6 +175,7 @@ main{min-height:calc(100vh - 160px)}
   gap: 24px;
   padding: 24px;
   text-align: left;
+  align-items: flex-start;
 }
 .business-card {
   background: white;
@@ -188,9 +189,10 @@ main{min-height:calc(100vh - 160px)}
   flex-wrap:wrap;
   padding: 20px;
   width: 100%;
-  max-width: 320px; /* ✅ keeps cards uniform */
-  box-sizing: border-box; /* ✅ prevents padding from adding overflow */
-  overflow: hidden; /* ✅ hides anything that spills out */
+  max-width: 320px;
+  box-sizing: border-box;
+  overflow: visible;
+  align-self: flex-start;
 }
 .business-card:hover {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
@@ -391,13 +393,25 @@ footer { background: var(--header-bg); color: var(--header-link); text-align: ce
 
 /* AI Review Analysis Styles */
 .analysis-box { 
-  margin-top: 10px; 
+  margin: 0;
   background: #f7fbff; 
   border-radius: 8px; 
-  padding: 10px; 
+  padding: 0;
+  height: 0;
   font-size: 0.95rem; 
   display: none; 
+  border: 0 solid #d1e3ff;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+.analysis-box.active {
+  display: block;
+  margin-top: 10px;
+  padding: 10px;
+  height: auto;
   border: 1px solid #d1e3ff;
+  opacity: 1;
 }
 .analyze-btn { 
   background: #2563eb; 
