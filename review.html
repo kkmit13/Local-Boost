@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Leave a Review</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="HeaderTabs">
+        <p><a href="BusinessListing.html">Back to Listings</a></p>
+      </div>
+    </nav>
+    <h1 class="HeaderTitle">Leave a Review</h1>
+  </header>
+
+  <main class="main-form">
+    <div id="business-summary">Loading...</div>
+
+    <!-- REVIEW FORM -->
+    <form id="review-form" class="review-form" novalidate>
+      <fieldset class="rating-fieldset" aria-labelledby="rating-legend">
+        <legend id="rating-legend">Your rating</legend>
+        <div class="stars" role="radiogroup" aria-labelledby="rating-legend">
+          <input type="radio" id="star5" name="rating" value="5"><label for="star5" title="5 stars">★</label>
+          <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4 stars">★</label>
+          <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 stars">★</label>
+          <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2 stars">★</label>
+          <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1 star">★</label>
+        </div>
+      </fieldset>
+
+      <label class="form-label">Your name (optional)
+        <input type="text" name="name" id="reviewer-name" placeholder="Your name" />
+      </label>
+
+      <label class="form-label">Review title (optional)
+        <input type="text" name="title" id="review-title" maxlength="80" placeholder="Short title" />
+      </label>
+
+      <label class="form-label">Your review
+        <textarea name="text" id="review-text" rows="6" required minlength="10"
+          placeholder="What did you like or dislike? (min 10 characters)"></textarea>
+      </label>
+
+      <label class="form-label">Email (optional)
+        <input type="email" name="email" id="review-email" placeholder="you@example.com" />
+      </label>
+
+      <div class="form-actions">
+        <button type="submit" class="btn submit-btn">Submit review</button>
+        <a href="BusinessListing.html" class="btn cancel-btn">Cancel</a>
+      </div>
+
+      <div id="form-message" role="status" aria-live="polite" class="form-message" style="margin-top:10px;"></div>
+    </form>
+
+    <!-- Container to display submitted reviews -->
+    <div id="submitted-reviews"></div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 LocalLink</p>
+  </footer>
+
+  <script src="sample.js"></script>
+  <script>
+function getQueryParam(name) { 
+  return new URLSearchParams(location.search).get(name); 
+}
+
+// store reviews in memory (keyed by businessId)
+const allReviews = {};
+
+document.addEventListener('DOMContentLoaded', () => {
+  const id = getQueryParam('id');
+  if(!id){
+    document.getElementById('business-summary').innerText = 'No business id provided. Go back to listings.';
+    return;
+  }
+
+  const business = (window.LISTINGS || []).find(b => String(b.id) === String(id));
+  if(!business){
+    document.getElementById('business-summary').innerText = 'Business not found. Go back to listings.';
+    return;
+  }
+
+  document.getElementById('business-summary').innerHTML = `
+    <h2>${business.name}</h2>
+    <p>${business.category} • ${business.address || ''}</p>
+  `;
+
+  const form = document.getElementById('review-form');
+  const reviewsContainer = document.getElementById('submitted-reviews');
+  const formMessage = document.getElementById('form-message');
+
+  // function to render reviews for this business
+  function renderReviews() {
+    reviewsContainer.innerHTML = '';
+    const reviews = allReviews[id] || [];
+    if(reviews.length === 0) {
+      reviewsContainer.innerHTML = '<p>No reviews yet. Be the first to review!</p>';
+      return;
+    }
+    reviews.forEach(r => {
+      const reviewEl = document.createElement('div');
+      reviewEl.classList.add('review-card');
+      reviewEl.innerHTML = `
+        <h3>${r.title || 'Review'}</h3>
+        <p><strong>${r.name}</strong> — ${r.rating} ★</p>
+        <p>${r.text}</p>
+      `;
+      reviewsContainer.appendChild(reviewEl);
+    });
+  }
+
+  renderReviews(); // show existing reviews on page load
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // CAPTCHA
+    const num1 = Math.floor(Math.random() * 10) + 1;
+    const num2 = Math.floor(Math.random() * 10) + 1;
+    const answer = prompt(`What is ${num1} + ${num2}?`);
+    if(answer === null) return;
+    if(parseInt(answer) !== (num1 + num2)) {
+      alert('Incorrect answer. Please try again.');
+      return;
+    }
+
+    // collect data
+    const data = {
+      rating: form.rating.value,
+      name: form.name.value || 'Anonymous',
+      title: form.title.value,
+      text: form.text.value,
+      email: form.email.value
+    };
+
+    // save review
+    if(!allReviews[id]) allReviews[id] = [];
+    allReviews[id].push(data);
+
+    // render reviews
+    renderReviews();
+
+    // reset form
+    form.reset();
+    alert('Review submitted!');
+  });
+});
+  </script>
+</body>
+</html>
