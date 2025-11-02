@@ -1,112 +1,335 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LocalLink Home</title>
-   
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LocalBoost — Byte-Sized Business Boost</title>
+  <meta name="description" content="LocalBoost — discover & support local businesses. FBLA coding & programming demo." />
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+  <style>
+    /* style.css - Compact, responsive and accessible layout */
+    :root{--primary:#0077ff;--bg:#f6f8fb;--card:#ffffff;--muted:#6b7280}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;background:var(--bg);color:#0f172a;line-height:1.4}
+    .app{max-width:1100px;margin:24px auto;padding:18px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    h1{font-size:1.25rem;margin:0}
+    .controls{display:flex;gap:8px;align-items:center}
+    .search{display:flex;align-items:center;background:#fff;padding:6px;border-radius:8px;box-shadow:0 1px 2px rgba(2,6,23,.06)}
+    .search input{border:0;outline:0;padding:8px;width:320px}
+    select,button,input[type=search]{font:inherit}
+    .grid{display:grid;grid-template-columns:1fr 340px;gap:18px;margin-top:18px}
+    .panel{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,.04)}
+    .list{display:grid;gap:10px}
+    .card{display:flex;gap:10px;padding:10px;border-radius:8px;align-items:center}
+    .card img{width:64px;height:64px;border-radius:8px;object-fit:cover}
+    .meta{flex:1}
+    .meta h3{margin:0;font-size:1rem}
+    .meta p{margin:4px 0;color:var(--muted);font-size:.9rem}
+    .actions{display:flex;flex-direction:column;gap:6px}
+    .btn{background:var(--primary);color:#fff;border:0;padding:8px 10px;border-radius:8px;cursor:pointer}
+    .btn.secondary{background:transparent;color:var(--primary);border:1px solid rgba(0,119,255,.14)}
+    .filters{display:flex;gap:6px;flex-wrap:wrap}
+    .chip{background:#eef6ff;padding:6px 8px;border-radius:999px;font-size:.85rem;color:var(--primary);cursor:pointer}
+    .bookmarks{display:flex;flex-direction:column;gap:8px}
+    .deals-list{display:grid;gap:8px}
+    .deal{padding:8px;border-radius:8px;background:linear-gradient(90deg,#fff,#f8fafc);border:1px dashed rgba(0,0,0,.05)}
+    footer{margin-top:18px;color:var(--muted);font-size:.85rem}
+    /* responsive */
+    @media (max-width:900px){.grid{grid-template-columns:1fr}.search input{width:140px}.actions{flex-direction:row}}
+    /* focus */
+    :focus{outline:3px solid rgba(0,119,255,.12);outline-offset:2px}
+  </style>
 </head>
 <body>
-   
+  <div class="app" id="app">
     <header>
-      <nav>
-            <div class="HeaderTabs">
-              <div class="logo-container">
-              <img src="favicon.ico" alt="LocalLink Logo" class="logo-img">
-            </div>
-
-                <p><a href="index.html" id="home-tab-btn">Home</a></p>
-                <p><a href="BusinessListing.html" id="business-listings-button">Business Listing|Bookmarks</a></p>
-                <p><a href="deals.html" id="deals-tab-btn">Deals</a></p>
-                <div class="theme-toggle">
-                  <input type="checkbox" id="theme-switch" aria-label="Toggle dark mode">
-                  <label for="theme-switch" class="toggle-label"><span class="toggle-ball"><span class="icon-sun">☀️</span><span class="icon-moon">🌙</span></span></label>
-                </div>
-            </div>
-
-
-        </nav>
-
-        <center>  
-        <h1 class="HeaderTitle">LocalLink</h1>
-        <h2 class="Home-Message">Discover local businesses near you</h2>
-       
+      <div>
+        <h1 id="app-title">LocalBoost</h1>
+        <div style="color:var(--muted);font-size:.9rem">Byte-Sized Business Boost — FBLA 2025–2026</div>
+      </div>
+      <div class="controls" role="region" aria-label="search and controls">
+        <div class="search" role="search">
+          <label for="q" class="visually-hidden">Search businesses</label>
+          <input id="q" type="search" inputmode="search" placeholder="Search businesses, tags, or city" aria-label="Search businesses" />
+          <button class="btn" id="clear-search" title="Clear search">Clear</button>
+        </div>
+        <select id="categoryFilter" aria-label="Filter by category">
+          <option value="all">All categories</option>
+        </select>
+        <button class="btn secondary" id="showBookmarks">Bookmarks</button>
+      </div>
     </header>
 
+    <main class="grid" id="main">
+      <section class="panel" aria-labelledby="results-heading">
+        <h2 id="results-heading">Businesses</h2>
+        <div class="filters" id="categoryChips" role="toolbar" aria-label="category filters"></div>
+        <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+          <label for="sort">Sort</label>
+          <select id="sort" aria-label="Sort businesses">
+            <option value="rating">Top rated</option>
+            <option value="recent">Most reviewed</option>
+            <option value="alpha">A → Z</option>
+          </select>
+          <div style="margin-left:auto;color:var(--muted)" id="result-count">0 results</div>
+        </div>
 
-   
-    <main>
-       
-        <section id="home-tab" class="tab-section">
-       
-            <div class="search-div">
-               <input type="text" placeholder="Search businesses..." id="search-bar">
-            </div>
-           
-            <div id="business-list">
-               
-            </div>
-          </section>
+        <div class="list" id="businessList" tabindex="0" aria-live="polite" style="margin-top:12px"></div>
+      </section>
+
+      <aside class="panel" aria-labelledby="side-heading">
+        <h2 id="side-heading">Quick Actions</h2>
+        <div style="margin-bottom:12px">
+          <h3 style="margin:6px 0">Bookmarks</h3>
+          <div class="bookmarks" id="bookmarks"></div>
+        </div>
+
+        <div style="margin-bottom:12px">
+          <h3 style="margin:6px 0">Deals & Coupons</h3>
+          <div class="deals-list" id="deals"></div>
+        </div>
 
         <div>
-        <button class="AI-Button" id="ai-explore-btn">🤖 Explore with our AI Tool!</button>
+          <h3 style="margin:6px 0">Add a Review</h3>
+          <form id="reviewForm" aria-label="Add a review">
+            <input type="hidden" id="review-business-id" />
+            <div style="display:flex;gap:8px;margin-bottom:6px;align-items:center">
+              <label for="review-rating">Rating</label>
+              <select id="review-rating" required>
+                <option value="">—</option>
+                <option value="5">5 — Excellent</option>
+                <option value="4">4 — Good</option>
+                <option value="3">3 — Okay</option>
+                <option value="2">2 — Poor</option>
+                <option value="1">1 — Awful</option>
+              </select>
+            </div>
+            <div style="margin-bottom:6px">
+              <label for="review-text">Review</label>
+              <textarea id="review-text" rows="3" required style="width:100%"></textarea>
+            </div>
+            <!-- Honeypot for bot prevention -->
+            <div style="position:absolute;left:-9999px;top:auto;overflow:hidden">
+              <label for="hp">Leave this field blank</label>
+              <input id="hp" autocomplete="off" tabindex="-1" />
+            </div>
+            <button class="btn" type="submit">Submit Review</button>
+          </form>
         </div>
-        <br>
-        <!-- AI Recommendations Modal -->
-        <div id="ai-recommendations-modal" style="display:none;">
-          <div class="ai-modal-content">
-            <span class="ai-close-btn">&times;</span>
-            <h2> AI-Powered Recommendations</h2>
-            <p class="ai-subtitle">Based on your bookmarks and browsing preferences</p>
-            <div id="ai-recommendations-container"></div>
-          </div>
+
+        <hr />
+        <div>
+          <h3 style="margin:6px 0">Export</h3>
+          <button class="btn secondary" id="exportJson">Export JSON</button>
         </div>
-
-        
-      </center>
-
-
-
-         <section id="listings-tab" class="tab-section" style="display:none;">
-            <h2>Business Listings</h2>
-          <div id="all-businesses">
-     
-           <p>Coming soon — this will show all businesses in a grid/list.</p>
-         </div>
-          </section>
-
-
-        <section id="bookmarks-tab" class="tab-section" style="display:none;">
-            <h2>Bookmarks</h2>
-            <div id="bookmarked-businesses"></div>
-        </section>
-
-
-       
-        <section id="deals-tab" class="tab-section" style="display:none;">
-            <h2>Deals</h2>
-            <div id="deals-list"></div>
-        </section>
-
-    
-
-
+      </aside>
     </main>
 
+    <footer>
+      <div>LocalBoost — client-side demo. Last updated: Oct 16, 2025</div>
+    </footer>
+  </div>
 
-  <footer>
-    <p>&copy; 2025 LocalLink — Empowering local connections.</p>
-  </footer>
+  <template id="business-card-template">
+    <article class="card" tabindex="0">
+      <img alt="business logo" />
+      <div class="meta">
+        <h3></h3>
+        <p class="desc"></p>
+        <div class="sub" style="font-size:.85rem;color:var(--muted)"></div>
+      </div>
+      <div class="actions">
+        <button class="btn view">View</button>
+        <button class="btn secondary bookmark">★</button>
+      </div>
+    </article>
+  </template>
 
+  <script>
+    // SampleData.js — seed data for demo
+    const SAMPLE_BUSINESSES = [
+      {id:'b1',name:'Blue Bird Cafe',category:'food',rating:4.6,reviewCount:28,tags:['breakfast','coffee'],description:'Cozy neighborhood cafe with house-roasted coffee.',contact:{phone:'(512) 555-0111',website:'https://example.com'},deals:[{code:'LOCALLINK20',desc:'20% off',validUntil:'2025-11-15'}]},
+      {id:'b2',name:'Green Scissors Salon',category:'services',rating:4.4,reviewCount:16,tags:['hair','spa'],description:'Sustainable salon offering cuts, color & treatments.',contact:{phone:'(512) 555-0222'} ,deals:[]},
+      {id:'b3',name:'Oak & Stone Books',category:'retail',rating:4.9,reviewCount:54,tags:['books','gifts'],description:'Independent bookstore with community events.',contact:{website:'https://oakstone.example.com'},deals:[{code:'BOOKLOVER',desc:'Free bookmark with purchase',validUntil:'2025-12-31'}]},
+      {id:'b4',name:'Starlight Cinema',category:'entertainment',rating:4.2,reviewCount:9,tags:['movies','screenings'],description:'Art-house cinema and community screenings.',contact:{} ,deals:[]}
+    ];
 
+    /***** app.js — main application logic (module-like structure) *****/
+    (function(){
+      // In-memory structures and indexes
+      const businessMap = new Map();
+      const bookmarksKey = 'localboost:bookmarks';
+      const reviewsKey = 'localboost:reviews';
 
+      // DOM refs
+      const q = document.getElementById('q');
+      const categoryFilter = document.getElementById('categoryFilter');
+      const categoryChips = document.getElementById('categoryChips');
+      const businessList = document.getElementById('businessList');
+      const resultCount = document.getElementById('result-count');
+      const sortEl = document.getElementById('sort');
+      const bookmarksEl = document.getElementById('bookmarks');
+      const dealsEl = document.getElementById('deals');
+      const reviewForm = document.getElementById('reviewForm');
+      const reviewBusinessId = document.getElementById('review-business-id');
+      const reviewRating = document.getElementById('review-rating');
+      const reviewText = document.getElementById('review-text');
+      const hp = document.getElementById('hp');
 
-   
-    <script src="SampleData.js"></script>
-    <script src="app.js"></script>
+      // Application state
+      let businesses = [];
+      let categories = new Set();
+      let bookmarks = new Set(loadJSON(bookmarksKey) || []);
+      let reviews = loadJSON(reviewsKey) || {};
+
+      // Utility functions
+      function saveJSON(key, value){localStorage.setItem(key, JSON.stringify(value))}
+      function loadJSON(key){try{return JSON.parse(localStorage.getItem(key))}catch(e){return null}}
+
+      // Initialize
+      function init(){
+        seedBusinesses(SAMPLE_BUSINESSES);
+        renderCategoryOptions();
+        renderCategoryChips();
+        renderDeals();
+        renderBookmarks();
+        attachHandlers();
+        refreshList();
+      }
+
+      function seedBusinesses(list){
+        businesses = list.map(b=>({...b,createdAt: new Date().toISOString()}));
+        businesses.forEach(b=>{businessMap.set(b.id,b); categories.add(b.category)})
+      }
+
+      function renderCategoryOptions(){
+        const opts = ['all',...Array.from(categories)];
+        categoryFilter.innerHTML = '';
+        opts.forEach(o=>{const opt=document.createElement('option');opt.value=o;opt.textContent=o[0].toUpperCase()+o.slice(1);categoryFilter.appendChild(opt)})
+      }
+
+      function renderCategoryChips(){
+        categoryChips.innerHTML='';
+        Array.from(categories).forEach(cat=>{
+          const chip=document.createElement('button');chip.className='chip';chip.textContent=cat;chip.setAttribute('aria-pressed','false');chip.addEventListener('click',()=>{categoryFilter.value=cat; refreshList();});categoryChips.appendChild(chip)
+        })
+      }
+
+      function attachHandlers(){
+        // Debounced search
+        let debounceTimer=null;
+        q.addEventListener('input',()=>{clearTimeout(debounceTimer);debounceTimer=setTimeout(refreshList,300)});
+        document.getElementById('clear-search').addEventListener('click',()=>{q.value='';refreshList();q.focus();});
+        categoryFilter.addEventListener('change',refreshList);
+        sortEl.addEventListener('change',refreshList);
+        document.getElementById('showBookmarks').addEventListener('click',()=>{window.scrollTo({top:0,behavior:'smooth'});document.getElementById('bookmarks').focus()});
+
+        // review submit with simple validation and honeypot check
+        reviewForm.addEventListener('submit',e=>{
+          e.preventDefault();
+          if(hp.value.trim()!==''){alert('Bot detected');return}
+          const bizId = reviewBusinessId.value || businesses[0].id;
+          const rating = Number(reviewRating.value);
+          const text = reviewText.value.trim();
+          if(!rating || !text){alert('Please provide rating and review text');return}
+          const r = {id:'r'+Date.now(),user:'local',rating,text,date:new Date().toISOString(),verifiedVisit:false};
+          reviews[bizId]=reviews[bizId]||[];reviews[bizId].push(r);saveJSON(reviewsKey,reviews);
+          // update business aggregate
+          const b = businessMap.get(bizId); b.reviewCount = (b.reviewCount||0)+1; b.rating = round((b.rating*(b.reviewCount-1)+rating)/b.reviewCount,2);
+          saveBusinessesToLocal();
+          reviewForm.reset();
+          reviewBusinessId.value='';
+          renderBookmarks();
+          refreshList();
+          alert('Thanks — your review is saved locally (demo).');
+        });
+
+        document.getElementById('exportJson').addEventListener('click',()=>{
+          const payload = {businesses,reviews,bookmarks:Array.from(bookmarks)};
+          const blob = new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');a.href=url;a.download='localboost-export.json';a.click();URL.revokeObjectURL(url);
+        });
+      }
+
+      function saveBusinessesToLocal(){saveJSON('localboost:businesses',Array.from(businessMap.values()))}
+
+      function refreshList(){
+        const qv = (q.value||'').toLowerCase().trim();
+        const cat = categoryFilter.value;
+        let filtered = businesses.filter(b=>{
+          if(cat!=='all' && b.category!==cat) return false;
+          if(!qv) return true;
+          // fuzzy-ish: check name, tags, description
+          return b.name.toLowerCase().includes(qv) || (b.description||'').toLowerCase().includes(qv) || (b.tags||[]).some(t=>t.toLowerCase().includes(qv));
+        });
+        // sort
+        const sortBy = sortEl.value;
+        if(sortBy==='rating') filtered.sort((a,b)=>b.rating-a.rating);
+        else if(sortBy==='recent') filtered.sort((a,b)=>b.reviewCount-b.reviewCount);
+        else filtered.sort((a,b)=>a.name.localeCompare(b.name));
+
+        resultCount.textContent = `${filtered.length} result${filtered.length!==1?'s':''}`;
+        businessList.innerHTML='';
+        const template = document.getElementById('business-card-template');
+        filtered.forEach(b=>{
+          const node = template.content.cloneNode(true);
+          const card = node.querySelector('.card');
+          card.querySelector('img').src = `https://via.placeholder.com/128?text=${encodeURIComponent(b.name.split(' ')[0])}`;
+          card.querySelector('h3').textContent = b.name + ` — ${b.rating} ★ (${b.reviewCount||0})`;
+          card.querySelector('.desc').textContent = b.description||'';
+          card.querySelector('.sub').textContent = `${b.category} — ${b.tags?b.tags.join(', '):''}`;
+          // view handler
+          node.querySelector('.view').addEventListener('click',()=>{openBusinessModal(b)});
+          // bookmark handler
+          const bmBtn = node.querySelector('.bookmark');
+          bmBtn.addEventListener('click',()=>{toggleBookmark(b.id);renderBookmarks();});
+          businessList.appendChild(node);
+        });
+      }
+
+      function openBusinessModal(b){
+        // minimal modal using alert for demo clarity — expand as needed
+        const rlist = (reviews[b.id]||[]).map(r=>`${r.rating}★ — ${r.text} (${new Date(r.date).toLocaleDateString()})`).join('\n\n')||'No reviews yet.';
+        const deals = (b.deals||[]).map(d=>`${d.code}: ${d.desc} (Valid: ${d.validUntil})`).join('\n')||'No deals.';
+        const info = `${b.name}\nCategory: ${b.category}\nRating: ${b.rating}★ (${b.reviewCount||0})\n\n${b.description||''}\n\nContact: ${b.contact?.phone||''} ${b.contact?.website||''}\n\nDeals:\n${deals}\n\nReviews:\n${rlist}`;
+        if(confirm(info+'\n\nWould you like to write a review for this business?')){
+          reviewBusinessId.value = b.id; reviewRating.focus();
+        }
+      }
+
+      function renderBookmarks(){
+        bookmarksEl.innerHTML='';
+        if(bookmarks.size===0){bookmarksEl.textContent='No bookmarks yet.';return}
+        bookmarks.forEach(id=>{const b = businessMap.get(id);if(!b) return;const el=document.createElement('div');el.className='card';el.style.padding='8px';el.innerHTML=`<div style="flex:1"><strong>${escapeHtml(b.name)}</strong><div style="color:var(--muted)">${b.category} — ${b.rating}★</div></div>`;const btn = document.createElement('button');btn.className='btn';btn.textContent='View';btn.addEventListener('click',()=>openBusinessModal(b));const del = document.createElement('button');del.className='btn secondary';del.textContent='Remove';del.addEventListener('click',()=>{bookmarks.delete(id);saveBookmarks();renderBookmarks();});el.appendChild(btn);el.appendChild(del);bookmarksEl.appendChild(el)})
+      }
+
+      function renderDeals(){
+        dealsEl.innerHTML='';
+        businesses.flatMap(b=> (b.deals||[]).map(d=>({biz:b,deal:d}))).forEach(item=>{
+          const el=document.createElement('div');el.className='deal';el.tabIndex=0;el.innerHTML=`<strong>${escapeHtml(item.biz.name)}</strong><div>${escapeHtml(item.deal.desc)}</div><div style="color:var(--muted);font-size:.85rem">Code: <code>${escapeHtml(item.deal.code)}</code> — Valid: ${escapeHtml(item.deal.validUntil)}</div>`;
+          dealsEl.appendChild(el);
+        })
+      }
+
+      function toggleBookmark(id){ if(bookmarks.has(id)) bookmarks.delete(id); else bookmarks.add(id); saveBookmarks(); }
+      function saveBookmarks(){ saveJSON(bookmarksKey, Array.from(bookmarks)); }
+
+      // small helpers
+      function round(n,d=2){return Math.round(n*Math.pow(10,d))/Math.pow(10,d)}
+      function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
+
+      // init app
+      init();
+    })();
+  </script>
+
+  <script>
+    // Service worker registration skeleton (offline support optional)
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker?.register('/sw.js').catch(()=>{/*sw optional for demo*/});
+    }
+  </script>
 </body>
 </html>
-
-
