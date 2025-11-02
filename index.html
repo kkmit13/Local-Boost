@@ -1,112 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LocalLink Home</title>
-   
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LocalLink</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-   
-    <header>
-      <nav>
-            <div class="HeaderTabs">
-              <div class="logo-container">
-              <img src="favicon.ico" alt="LocalLink Logo" class="logo-img">
-            </div>
+  <header>
+    <nav>
+      <div class="HeaderTabs">
+        <!-- Kept the original header style you liked -->
+        <p id="title-text">LocalLink</p>
 
-                <p><a href="index.html" id="home-tab-btn">Home</a></p>
-                <p><a href="BusinessListing.html" id="business-listings-button">Business Listing|Bookmarks</a></p>
-                <p><a href="deals.html" id="deals-tab-btn">Deals</a></p>
-                <div class="theme-toggle">
-                  <input type="checkbox" id="theme-switch" aria-label="Toggle dark mode">
-                  <label for="theme-switch" class="toggle-label"><span class="toggle-ball"><span class="icon-sun">☀️</span><span class="icon-moon">🌙</span></span></label>
-                </div>
-            </div>
+        <p><a href="index.html" id="home-page-btn">Home</a></p>
+        <p><a href="BusinessListing.html" id="listings-tab-btn">Business Listings</a></p>
+        <p><a href="bookmarks.html" id="bookmarks-tab-btn-home">Bookmarks</a></p>
+        <p><a href="deals.html" id="deals-tab-btn">Deals</a></p>
 
-
-        </nav>
-
-        <center>  
-        <h1 class="HeaderTitle">LocalLink</h1>
-        <h2 class="Home-Message">Discover local businesses near you</h2>
-       
-    </header>
-
-
-   
-    <main>
-       
-        <section id="home-tab" class="tab-section">
-       
-            <div class="search-div">
-               <input type="text" placeholder="Search businesses..." id="search-bar">
-            </div>
-           
-            <div id="business-list">
-               
-            </div>
-          </section>
-
-        <div>
-        <button class="AI-Button" id="ai-explore-btn">🤖 Explore with our AI Tool!</button>
+        <!-- Small, unobtrusive theme toggle (optional) -->
+        <div class="theme-toggle" style="margin-left:8px;">
+          <input type="checkbox" id="theme-switch" aria-label="Toggle dark mode">
+          <label for="theme-switch" class="toggle-label" title="Toggle theme">
+            <span class="toggle-ball"><span class="icon-sun">☀️</span><span class="icon-moon">🌙</span></span>
+          </label>
         </div>
-        <br>
-        <!-- AI Recommendations Modal -->
-        <div id="ai-recommendations-modal" style="display:none;">
-          <div class="ai-modal-content">
-            <span class="ai-close-btn">&times;</span>
-            <h2> AI-Powered Recommendations</h2>
-            <p class="ai-subtitle">Based on your bookmarks and browsing preferences</p>
-            <div id="ai-recommendations-container"></div>
+      </div>
+    </nav>
+
+    <h1 class="HeaderTitle">LocalLink</h1>
+    <h2 class="Home-Message">Discover local businesses near you</h2>
+  </header>
+
+  <main>
+    <!-- Home section -->
+    <section id="home-tab" class="tab-section">
+      <div class="search-div">
+        <input type="text" placeholder="Search businesses..." id="search-bar">
+      </div>
+
+      <!-- where businesses load -->
+      <div id="business-list"></div>
+
+      <!-- AI button (kept from new file but simple and optional) -->
+      <div style="margin-top: 12px;">
+        <button class="AI-Button" id="ai-explore-btn">🤖 Explore with our AI Tool!</button>
+      </div>
+
+      <!-- AI Recommendations Modal (kept minimal) -->
+      <div id="ai-recommendations-modal" class="ai-modal" style="display:none;">
+        <div class="ai-modal-content">
+          <button class="ai-close-btn" aria-label="Close AI recommendations">&times;</button>
+          <h2>AI-Powered Recommendations</h2>
+          <p class="ai-subtitle">Based on your bookmarks and browsing preferences</p>
+          <div id="ai-recommendations-container">
+            <!-- simple placeholder; populate via app.js or SampleData.js -->
+            <p style="opacity:.8;font-size:.95rem;margin:0;">(Recommendations will appear here.)</p>
           </div>
         </div>
+      </div>
+    </section>
 
-        
-      </center>
+    <!-- Listings -->
+    <section id="listings-tab" class="tab-section" style="display:none;">
+      <h2>Business Listings</h2>
+      <div id="all-businesses">
+        <p>Coming soon — this will show all businesses in a grid/list.</p>
+      </div>
+    </section>
 
+    <!-- Bookmarks -->
+    <section id="bookmarks-tab" class="tab-section" style="display:none;">
+      <h2>Bookmarks</h2>
+      <div id="bookmarked-businesses"></div>
+    </section>
 
-
-         <section id="listings-tab" class="tab-section" style="display:none;">
-            <h2>Business Listings</h2>
-          <div id="all-businesses">
-     
-           <p>Coming soon — this will show all businesses in a grid/list.</p>
-         </div>
-          </section>
-
-
-        <section id="bookmarks-tab" class="tab-section" style="display:none;">
-            <h2>Bookmarks</h2>
-            <div id="bookmarked-businesses"></div>
-        </section>
-
-
-       
-        <section id="deals-tab" class="tab-section" style="display:none;">
-            <h2>Deals</h2>
-            <div id="deals-list"></div>
-        </section>
-
-    
-
-
-    </main>
-
+    <!-- Deals -->
+    <section id="deals-tab" class="tab-section" style="display:none;">
+      <h2>Deals</h2>
+      <div id="deals-list"></div>
+    </section>
+  </main>
 
   <footer>
     <p>&copy; 2025 LocalLink — Empowering local connections.</p>
   </footer>
 
+  <!-- your existing data + app scripts -->
+  <script src="SampleData.js"></script>
+  <script src="app.js"></script>
 
+  <!-- small, unobtrusive wiring for modal + theme toggle (feel free to remove if you already have this logic in app.js) -->
+  <script>
+    (function () {
+      // modal wiring
+      const aiBtn = document.getElementById('ai-explore-btn');
+      const modal = document.getElementById('ai-recommendations-modal');
+      const closeBtn = modal ? modal.querySelector('.ai-close-btn') : null;
 
+      if (aiBtn && modal) {
+        aiBtn.addEventListener('click', () => {
+          modal.style.display = 'block';
+          // If you want the AI tool to populate content immediately, call whatever function in app.js here
+          // e.g. window.populateAIRecommendations && window.populateAIRecommendations();
+        });
+      }
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => modal.style.display = 'none');
+      }
+      // close when clicking outside content
+      window.addEventListener('click', (e) => {
+        if (e.target === modal) modal.style.display = 'none';
+      });
 
-   
-    <script src="SampleData.js"></script>
-    <script src="app.js"></script>
+      // theme toggle (adds 'dark' class to body; style in CSS)
+      const themeSwitch = document.getElementById('theme-switch');
+      if (themeSwitch) {
+        // load saved preference
+        try {
+          const saved = localStorage.getItem('ll-theme');
+          if (saved === 'dark') {
+            document.body.classList.add('dark');
+            themeSwitch.checked = true;
+          }
+        } catch (e) { /* ignore storage errors */ }
+
+        themeSwitch.addEventListener('change', () => {
+          if (themeSwitch.checked) {
+            document.body.classList.add('dark');
+            localStorage.setItem('ll-theme', 'dark');
+          } else {
+            document.body.classList.remove('dark');
+            localStorage.setItem('ll-theme', 'light');
+          }
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
-
-
