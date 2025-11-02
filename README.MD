@@ -7,7 +7,7 @@ LocalBoost is a comprehensive web application developed for the FBLA Coding & Pr
  
  Competition Requirements
 
-Event: Coding & Programming  
+Event: Coding & Programming
 Topic: Byte-Sized Business Boost  
 Division: High School  
 Team Size: 1-3 members  
