@@ -471,4 +471,53 @@ main h3 {
   font-size: 0.9rem;
 }
 
+/* Navbar container */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #007bff;
+  padding: 10px 20px;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+/* Links section */
+.nav-links a {
+  margin-right: 20px;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}
+
+/* Right section (logo or theme toggle) */
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+/* Logo image */
+.logo {
+  height: 40px;
+  width: auto;
+  border-radius: 6px;
+}
+
+/* Optional: if you want to push links left, logo right */
+.navbar * >  {
+  flex: 1; }
+.nav-links {
+  display: flex;
+  justify-content: flex-start;
+}
+.nav-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+
 
