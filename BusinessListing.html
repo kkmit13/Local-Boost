@@ -21,6 +21,25 @@
   <main>
     <h1 style="text-align:center; margin-top:18px;">Business Listings</h1>
 
+    <!-- Filter and Sort Controls -->
+    <section id="filter-sort-controls" style="text-align:center; margin: 20px 0;">
+      <label for="categoryFilter">Filter by Category:</label>
+      <select id="categoryFilter">
+        <option value="all">All</option>
+        <option value="Restaurant">Restaurant</option>
+        <option value="Electronics Repair">Electronics Repair</option>
+        <option value="Health & Wellness">Health & Wellness</option>
+      </select>
+
+      <label for="sortOption" style="margin-left:15px;">Sort by:</label>
+      <select id="sortOption">
+        <option value="default">Default</option>
+        <option value="rating">Highest Rating</option>
+        <option value="priceLowHigh">Price: Low to High</option>
+        <option value="priceHighLow">Price: High to Low</option>
+      </select>
+    </section>
+
     <!-- where listing cards will be added -->
     <div id="listings"></div>
 
