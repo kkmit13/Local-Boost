@@ -471,53 +471,175 @@ main h3 {
   font-size: 0.9rem;
 }
 
-/* Navbar container */
-.navbar {
+
+
+
+/* Layout: sidebar + listings */
+.page-body {
+  display: grid;
+  grid-template-columns: 260px 1fr; /* sidebar + content */
+  gap: 20px;
+  padding: 1.5rem 2rem;
+}
+
+/* Small screens -> stack */
+@media (max-width: 880px) {
+  .page-body { grid-template-columns: 1fr; }
+}
+
+/* Sidebar styles */
+.sidebar {
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+.sidebar h3 { margin-top: 0; }
+.sidebar .filters { display: flex; flex-direction: column; gap:8px; margin-top:10px; }
+.sidebar label { font-size: 0.95rem; cursor: pointer; }
+#sort-by { width: 100%; padding:8px 10px; margin-top:6px; border-radius:8px; }
+
+/* Make sure your listings grid still looks good */
+.listings-grid { padding: 0; } /* padding handled by .page-body */
+
+
+
+/* Search bar container */
+.search-div {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+/* Search input */
+#search-bar {
+  width: 90%;
+  max-width: 500px;
+  padding: 12px 18px;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 30px;
+  outline: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Focus effect */
+#search-bar:focus {
+  border-color: #1E90FF; /* Dodger Blue */
+  box-shadow: 0 4px 10px rgba(30, 144, 255, 0.3);
+}
+
+/* Placeholder styling */
+#search-bar::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+/* Optional: responsive adjustments */
+@media (max-width: 600px) {
+  #search-bar {
+    width: 95%;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+  }
+}
+
+
+/* ---------- Search results: centered & nicer (place near EOF) ---------- */
+
+/* container: center results, limit width so it reads nicely */
+#business-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;       /* center cards horizontally */
+  gap: 16px;
+  margin: 16px auto;
+  padding: 8px 16px;
+  width: 100%;
+  max-width: 920px;          /* overall page reading width */
+  box-sizing: border-box;
+}
+
+/* make individual cards wider in the search results (override grid defaults) */
+#business-list .business-card {
+  max-width: 100%;           /* fill the container width up to max-width */
+  min-height: auto;         /* remove the big fixed height for search list */
+  padding: 14px 18px;
+  display: block;           /* prefer block layout so content flows nicely */
+  width: 100%;
+  border-radius: 12px;
+  background: var(--card-bg);
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+/* keep the internal two-column layout but allow room for text */
+#business-list .business-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  background-color: #007bff;
-  padding: 10px 20px;
-  color: white;
-  font-family: Arial, sans-serif;
+  gap: 18px;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
-/* Links section */
-.nav-links a {
-  margin-right: 20px;
-  color: white;
+/* main content area within the card (left column) */
+#business-list .business-main {
+  flex: 1 1 60%;
+  min-width: 220px;
+}
+
+/* actions area (right column) */
+#business-list .business-actions {
+  flex: 0 0 160px;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+/* nicer site button using variables (keeps theme support) */
+#business-list .biz-site {
+  background: var(--color-primary);
+  color: var(--color-white);
+  padding: 6px 10px;
+  border-radius: 8px;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: inline-block;
+}
+#business-list .biz-site:hover { background: var(--color-primary-deep); }
+
+/* ensure the "no results" card is centered and not too big */
+#business-list .no-results-card {
+  width: 100%;
+  max-width: 640px;
+  text-align: center;
+  padding: 18px;
+  background: rgba(0,0,0,0.03);
+  border-radius: 10px;
+  font-style: italic;
+  color: var(--text-muted);
 }
 
-.nav-links a:hover {
-  text-decoration: underline;
+/* responsive: stack card columns on small screens */
+@media (max-width: 720px) {
+  #business-list {
+    padding: 12px;
+    max-width: 100%;
+  }
+  #business-list .business-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+  #business-list .business-actions {
+    align-items: flex-start;
+    text-align: left;
+  }
 }
-
-/* Right section (logo or theme toggle) */
-.nav-right {
-  display: flex;
-  align-items: center;
-}
-
-/* Logo image */
-.logo {
-  height: 40px;
-  width: auto;
-  border-radius: 6px;
-}
-
-/* Optional: if you want to push links left, logo right */
-.navbar * >  {
-  flex: 1; }
-.nav-links {
-  display: flex;
-  justify-content: flex-start;
-}
-.nav-right {
-  display: flex;
-  justify-content: flex-end;
-}
-
 
 
