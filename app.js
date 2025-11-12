@@ -1,136 +1,137 @@
-// app.js — bookmark persistence + wiring
-// Requires: If you want names/details on every page, include sample.js BEFORE this file.
+// app.js — minimal & readable: live search + render + bookmarks (localStorage)
 
-
+// storage
 const STORAGE_KEY = 'locallink_bookmarks_v1';
-
-
-// --- LocalStorage helpers ---
-function loadSavedIds(){
+function loadSavedIds() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-  catch(e){ console.error('loadSavedIds error', e); return []; }
+  catch { return []; }
 }
-function saveSavedIds(arr){
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
-  catch(e){ console.error('saveSavedIds error', e); }
+function saveSavedIds(arr) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); } catch {}
 }
 
+// main
+document.addEventListener('DOMContentLoaded', () => {
+  const searchBar = document.getElementById('search-bar');
+  const listContainer = document.getElementById('business-list');
+  const bookmarksContainer = document.getElementById('bookmarked-businesses');
 
-// --- Render bookmarks UI on the current page ---
-function renderBookmarks() {
-  const out = document.getElementById('bookmarked-businesses');
-  if (!out) return;
+  if (typeof LISTINGS === 'undefined') {
+    if (listContainer) listContainer.textContent = 'Listings data not available.';
+    return;
+  }
 
+  // restore bookmarked flags from storage
+  const saved = loadSavedIds();
+  LISTINGS.forEach(item => item.bookmarked = saved.includes(item.id));
 
-  out.innerHTML = '';
-
-
-  // Prefer using LISTINGS (if available) so we show names/details
-  if (typeof LISTINGS !== 'undefined') {
-    const saved = LISTINGS.filter(b => b.bookmarked);
-    if (saved.length === 0) {
-      out.innerHTML = '<p>No bookmarks yet. Click "Bookmark" on a listing to add it.</p>';
+  // render bookmarks (very small)
+  function renderBookmarks() {
+    if (!bookmarksContainer) return;
+    bookmarksContainer.innerHTML = '';
+    const marked = LISTINGS.filter(b => b.bookmarked);
+    if (marked.length === 0) {
+      bookmarksContainer.textContent = 'No bookmarks yet.';
       return;
     }
-    saved.forEach(b => {
+    marked.forEach(b => {
       const d = document.createElement('div');
       d.className = 'business-card small';
-      d.innerHTML = `<h3>${escapeHtml(b.name)}</h3><p>${escapeHtml(b.shortDescription || b.category || '')}</p>`;
-      out.appendChild(d);
+      const h = document.createElement('h3'); h.textContent = b.name;
+      const p = document.createElement('p'); p.textContent = b.shortDescription || b.category || '';
+      d.appendChild(h); d.appendChild(p);
+      bookmarksContainer.appendChild(d);
     });
-    return;
   }
 
-
-  // If LISTINGS not defined, try to show minimal info using saved IDs
-  const savedIds = loadSavedIds();
-  if (savedIds.length === 0) {
-    out.innerHTML = '<p>No bookmarks yet.</p>';
-    return;
-  }
-  savedIds.forEach(id => {
-    const d = document.createElement('div');
-    d.className = 'business-card small';
-    d.textContent = id; // fallback: show the id only
-    out.appendChild(d);
-  });
-}
-
-
-// --- Utility: HTML escape ---
-function escapeHtml(s){ if(!s && s !== 0) return ''; return String(s).replace(/[&<>"']/g, m=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
-
-// --- Sync saved IDs into LISTINGS.bookmarked flags ---
-function restoreSavedToListings(){
-  if (typeof LISTINGS === 'undefined') return;
-  const saved = loadSavedIds();
-  LISTINGS.forEach(l => l.bookmarked = saved.includes(l.id));
-}
-
-
-// --- Make checkboxes reflect LISTINGS.bookmarked (if we have LISTINGS) or saved ids ---
-function syncCheckboxesFromSaved() {
-  const boxes = document.querySelectorAll('.bookmark-checkbox');
-  const saved = loadSavedIds();
-  boxes.forEach(cb => {
-    const id = cb.dataset.id;
-    if (!id) return;
-    // prefer LISTINGS flag if present
-    if (typeof LISTINGS !== 'undefined') {
-      const item = LISTINGS.find(x => String(x.id) === String(id));
-      if (item) cb.checked = !!item.bookmarked;
-      else cb.checked = saved.includes(id);
-    } else {
-      cb.checked = saved.includes(id);
+  // render results into listContainer
+  function renderResults(items) {
+    listContainer.innerHTML = '';
+    if (!items || items.length === 0) {
+      const no = document.createElement('div');
+      no.className = 'no-results-card';
+      no.textContent = 'No businesses found.';
+      listContainer.appendChild(no);
+      return;
     }
-  });
-}
 
+    items.forEach(b => {
+      const card = document.createElement('div');
+      card.className = 'business-card';
 
-// --- Attach change listeners to checkboxes (id comes from data-id) ---
-function attachCheckboxListeners() {
-  const boxes = document.querySelectorAll('.bookmark-checkbox');
-  boxes.forEach(cb => {
-    if (cb.dataset.bound === 'true') return; // avoid double-binding
-    cb.dataset.bound = 'true';
-    cb.addEventListener('change', () => {
-      const id = cb.dataset.id;
-      if (!id) return;
-      // update LISTINGS if available
-      if (typeof LISTINGS !== 'undefined') {
-        const item = LISTINGS.find(x => String(x.id) === String(id));
-        if (item) item.bookmarked = cb.checked;
-      }
-      // compute saved ids to persist
-      let savedIds;
-      if (typeof LISTINGS !== 'undefined') {
-        savedIds = LISTINGS.filter(x => x.bookmarked).map(x => x.id);
-      } else {
-        savedIds = Array.from(document.querySelectorAll('.bookmark-checkbox:checked')).map(n => n.dataset.id);
-      }
-      saveSavedIds(savedIds);
-      // console log for debugging/demonstration
-      const name = (typeof LISTINGS !== 'undefined') ? (LISTINGS.find(x => String(x.id) === String(id)) || {}).name : id;
-      if (cb.checked) console.log(`Bookmarked: ${name || id}`);
-      else console.log(`Removed bookmark: ${name || id}`);
-      // update bookmarks area on this page
-      renderBookmarks();
+      const row = document.createElement('div');
+      row.className = 'business-row';
+
+      const main = document.createElement('div');
+      main.className = 'business-main';
+      const title = document.createElement('h3'); title.className = 'biz-name'; title.textContent = b.name;
+      const meta = document.createElement('p'); meta.className = 'biz-meta'; meta.textContent = `${b.category} • ${b.address}`;
+      const desc = document.createElement('p'); desc.className = 'biz-desc'; desc.textContent = b.shortDescription || '';
+      const stats = document.createElement('p'); stats.className = 'biz-stats'; stats.textContent = `Rating: ${b.rating} (${b.reviewCount}) • ${'$'.repeat(b.priceRange || 1)}`;
+      main.appendChild(title); main.appendChild(meta); main.appendChild(desc); main.appendChild(stats);
+
+      const actions = document.createElement('div');
+      actions.className = 'business-actions';
+      const link = document.createElement('a');
+      link.className = 'biz-site';
+      link.textContent = 'Website';
+      if (b.website) { link.href = b.website; link.target = '_blank'; } else { link.href = '#'; link.onclick = (e) => e.preventDefault(); }
+      const lbl = document.createElement('label');
+      lbl.style.fontSize = '0.9rem';
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.className = 'bookmark-checkbox';
+      cb.dataset.id = b.id;
+      cb.checked = !!b.bookmarked;
+      lbl.appendChild(cb);
+      lbl.appendChild(document.createTextNode(' Bookmark'));
+      actions.appendChild(link);
+      actions.appendChild(lbl);
+
+      row.appendChild(main);
+      row.appendChild(actions);
+      card.appendChild(row);
+      card.appendChild(document.createElement('hr'));
+
+      listContainer.appendChild(card);
+
+      // checkbox listener
+      cb.addEventListener('change', () => {
+        b.bookmarked = cb.checked;
+        const ids = LISTINGS.filter(x => x.bookmarked).map(x => x.id);
+        saveSavedIds(ids);
+        renderBookmarks();
+      });
     });
-  });
-}
-
-
-// --- Initialization wiring ---
-document.addEventListener('DOMContentLoaded', () => {
-  // If we have LISTINGS loaded (sample.js), restore flags into it
-  if (typeof LISTINGS !== 'undefined') {
-    restoreSavedToListings();
   }
-  // Make checkboxes reflect persisted state
-  syncCheckboxesFromSaved();
-  // Attach listeners (works for boxes created inline or rendered by JS)
-  attachCheckboxListeners();
-  // Render bookmark area (if present)
+
+  // filter function
+  function filterByQuery(q) {
+    if (!q) return [];
+    const ql = q.trim().toLowerCase();
+    if (ql === '') return [];
+    return LISTINGS.filter(b => {
+      return (b.name && b.name.toLowerCase().includes(ql)) ||
+             (b.category && b.category.toLowerCase().includes(ql)) ||
+             (b.shortDescription && b.shortDescription.toLowerCase().includes(ql)) ||
+             (Array.isArray(b.tags) && b.tags.some(t => t.toLowerCase().includes(ql)));
+    });
+  }
+
+  // live update
+  function update() {
+    const q = searchBar ? searchBar.value : '';
+    if (!q || q.trim() === '') {
+      listContainer.innerHTML = ''; // show nothing when empty
+      return;
+    }
+    const results = filterByQuery(q);
+    renderResults(results);
+  }
+
+  // wire input
+  if (searchBar) searchBar.addEventListener('input', update);
+
+  // initial render of bookmarks only
   renderBookmarks();
 });
