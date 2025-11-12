@@ -1,3 +1,4 @@
+// sample.js — updated with consistent fields for filtering & sorting (extended)
 const LISTINGS = [
   {
     id: "b1",
@@ -29,9 +30,12 @@ const LISTINGS = [
     deal: {
       description: "Free pastry with any coffee (Mon–Fri).",
       expires: "2025-12-31"
-    }
+    },
+    studentDeal: true,
+    accessibility: "Wheelchair ramp",
+    noiseLevel: "Quiet",
+    events: ["Study Night Tue 6 PM"]
   },
-
 
   {
     id: "b2",
@@ -61,9 +65,12 @@ const LISTINGS = [
     deal: {
       description: "10% off purchases over $20 (in-store).",
       expires: "2025-11-30"
-    }
+    },
+    studentDeal: true,
+    accessibility: "Wheelchair accessible (entrance listed)",
+    noiseLevel: "Moderate",
+    events: ["Author Reading — Nov 12", "Children's Storytime Sat 11 AM"]
   },
-
 
   {
     id: "b3",
@@ -89,9 +96,12 @@ const LISTINGS = [
       sunday: [{ open: "08:00", close: "18:00" }]
     },
     reviews: [],
-    bookmarked: false
+    bookmarked: false,
+    studentDeal: false,
+    accessibility: "Wheelchair accessible (main studio has ramp)",
+    noiseLevel: "Quiet",
+    events: ["Morning Flow Sat 9 AM", "Beginner Workshop — Dec 6"]
   },
-
 
   {
     id: "b4",
@@ -117,9 +127,12 @@ const LISTINGS = [
       sunday: [{ open: "00:00", close: "23:59" }]
     },
     reviews: [],
-    bookmarked: false
+    bookmarked: false,
+    studentDeal: false,
+    accessibility: "No ramp listed",
+    noiseLevel: "Busy",
+    events: []
   },
-
 
   {
     id: "b5",
@@ -149,10 +162,237 @@ const LISTINGS = [
     deal: {
       description: "20% off first visit (new customers).",
       expires: "2026-01-31"
-    }
+    },
+    studentDeal: true,
+    accessibility: "Wheelchair accessible (main entrance)",
+    noiseLevel: "Moderate",
+    events: ["New Client Special — ongoing"]
+  },
+
+  // ---- additional entries ----
+
+  {
+    id: "b6",
+    name: "Sunrise Bakery",
+    address: "210 Pine St, Austin, TX 78701",
+    phone: "(512) 555-0666",
+    website: "https://sunrisebakery.example.com",
+    category: "Bakery",
+    rating: 4.7,
+    reviewCount: 184,
+    priceRange: 1,
+    openedDate: "2012-03-12",
+    shortDescription: "Freshly baked breads, croissants, and a seasonal pie selection.",
+    tags: ["bakery", "pastries", "breakfast"],
+    photos: [],
+    hours: {
+      monday: [{ open: "06:00", close: "15:00" }],
+      tuesday: [{ open: "06:00", close: "15:00" }],
+      wednesday: [{ open: "06:00", close: "15:00" }],
+      thursday: [{ open: "06:00", close: "15:00" }],
+      friday: [{ open: "06:00", close: "15:00" }],
+      saturday: [{ open: "07:00", close: "14:00" }],
+      sunday: [{ open: "07:00", close: "14:00" }]
+    },
+    reviews: [{ id: "r10", userName: "Maya", rating: 5, text: "Best croissants in town.", date: "2025-04-22" }],
+    bookmarked: false,
+    deal: { description: "Buy 2 pastries, get 1 half off (weekends).", expires: "2025-12-01" },
+    studentDeal: true,
+    accessibility: "Step-free entrance",
+    noiseLevel: "Moderate",
+    events: ["Sunday Brunch Special"]
+  },
+
+  {
+    id: "b7",
+    name: "Oakwood Gym",
+    address: "420 Fitness Ave, Austin, TX 78702",
+    phone: "(512) 555-0777",
+    website: "https://oakwoodgym.example.com",
+    category: "Fitness",
+    rating: 4.2,
+    reviewCount: 97,
+    priceRange: 2,
+    openedDate: "2017-08-01",
+    shortDescription: "24/7 gym with strength and cardio areas, plus group classes.",
+    tags: ["gym", "fitness", "24/7"],
+    photos: [],
+    hours: {
+      monday: [{ open: "00:00", close: "23:59" }],
+      tuesday: [{ open: "00:00", close: "23:59" }],
+      wednesday: [{ open: "00:00", close: "23:59" }],
+      thursday: [{ open: "00:00", close: "23:59" }],
+      friday: [{ open: "00:00", close: "23:59" }],
+      saturday: [{ open: "06:00", close: "22:00" }],
+      sunday: [{ open: "06:00", close: "22:00" }]
+    },
+    reviews: [],
+    bookmarked: false,
+    deal: { description: "Student discount on monthly membership (show ID).", expires: "2025-12-31" },
+    studentDeal: true,
+    accessibility: "Accessible locker rooms",
+    noiseLevel: "Loud",
+    events: ["Bootcamp Mon/Wed 6AM"]
+  },
+
+  {
+    id: "b8",
+    name: "Pixel Repair",
+    address: "88 Tech Row, Austin, TX 78703",
+    phone: "(512) 555-0888",
+    website: "https://pixelrepair.example.com",
+    category: "Electronics",
+    rating: 4.4,
+    reviewCount: 58,
+    priceRange: 2,
+    openedDate: "2015-09-05",
+    shortDescription: "Phone and laptop repair, quick screen replacement and diagnostics.",
+    tags: ["repair", "electronics", "phone", "laptop"],
+    photos: [],
+    hours: {
+      monday: [{ open: "10:00", close: "18:00" }],
+      tuesday: [{ open: "10:00", close: "18:00" }],
+      wednesday: [{ open: "10:00", close: "18:00" }],
+      thursday: [{ open: "10:00", close: "18:00" }],
+      friday: [{ open: "10:00", close: "18:00" }],
+      saturday: [{ open: "11:00", close: "16:00" }],
+      sunday: []
+    },
+    reviews: [{ id: "r12", userName: "Leo", rating: 5, text: "Fixed my phone in an hour.", date: "2025-06-10" }],
+    bookmarked: false,
+    studentDeal: false,
+    accessibility: "Step-free entrance",
+    noiseLevel: "Moderate",
+    events: []
+  },
+
+  {
+    id: "b9",
+    name: "Lotus Thai",
+    address: "305 Riverside Dr, Austin, TX 78701",
+    phone: "(512) 555-0999",
+    website: "https://lotusthai.example.com",
+    category: "Restaurant",
+    rating: 4.6,
+    reviewCount: 223,
+    priceRange: 2,
+    openedDate: "2010-05-18",
+    shortDescription: "Authentic Thai dishes with a modern twist; vegetarian options available.",
+    tags: ["thai", "dinner", "vegetarian", "spicy"],
+    photos: [],
+    hours: {
+      monday: [{ open: "11:00", close: "22:00" }],
+      tuesday: [{ open: "11:00", close: "22:00" }],
+      wednesday: [{ open: "11:00", close: "22:00" }],
+      thursday: [{ open: "11:00", close: "22:00" }],
+      friday: [{ open: "11:00", close: "23:00" }],
+      saturday: [{ open: "11:00", close: "23:00" }],
+      sunday: [{ open: "11:00", close: "21:00" }]
+    },
+    reviews: [],
+    bookmarked: false,
+    deal: { description: "Lunch special: two-course set for $12.99 (Mon–Fri).", expires: "2025-10-31" },
+    studentDeal: false,
+    accessibility: "Wheelchair accessible",
+    noiseLevel: "Moderate",
+    events: ["Live Thai Music — Sat 7PM"]
+  },
+
+  {
+    id: "b10",
+    name: "Cedar Flowers",
+    address: "19 Garden Ln, Austin, TX 78704",
+    phone: "(512) 555-1010",
+    website: "https://cedarflowers.example.com",
+    category: "Florist",
+    rating: 4.9,
+    reviewCount: 64,
+    priceRange: 2,
+    openedDate: "2005-02-14",
+    shortDescription: "Local florist specializing in weddings, events and same-day bouquets.",
+    tags: ["flowers", "weddings", "gifts"],
+    photos: [],
+    hours: {
+      monday: [{ open: "09:00", close: "18:00" }],
+      tuesday: [{ open: "09:00", close: "18:00" }],
+      wednesday: [{ open: "09:00", close: "18:00" }],
+      thursday: [{ open: "09:00", close: "18:00" }],
+      friday: [{ open: "09:00", close: "18:00" }],
+      saturday: [{ open: "10:00", close: "16:00" }],
+      sunday: []
+    },
+    reviews: [{ id: "r20", userName: "Sam", rating: 5, text: "Beautiful bouquets, very helpful staff.", date: "2025-03-02" }],
+    bookmarked: false,
+    studentDeal: false,
+    accessibility: "Wheelchair accessible (entrance)",
+    noiseLevel: "Quiet",
+    events: ["Wedding Consultation by appointment"]
+  },
+
+  {
+    id: "b11",
+    name: "StudyHub Co-Working",
+    address: "101 College St, Austin, TX 78702",
+    phone: "(512) 555-1111",
+    website: "https://studyhub.example.com",
+    category: "Coworking",
+    rating: 4.4,
+    reviewCount: 75,
+    priceRange: 2,
+    openedDate: "2020-01-10",
+    shortDescription: "Quiet coworking + tutoring rooms; day passes and monthly memberships.",
+    tags: ["study", "coworking", "tutoring", "wifi"],
+    photos: [],
+    hours: {
+      monday: [{ open: "08:00", close: "20:00" }],
+      tuesday: [{ open: "08:00", close: "20:00" }],
+      wednesday: [{ open: "08:00", close: "20:00" }],
+      thursday: [{ open: "08:00", close: "20:00" }],
+      friday: [{ open: "08:00", close: "18:00" }],
+      saturday: [{ open: "09:00", close: "16:00" }],
+      sunday: [{ open: "10:00", close: "16:00" }]
+    },
+    reviews: [],
+    bookmarked: false,
+    deal: { description: "Student day pass $5 (show valid ID).", expires: "2026-06-30" },
+    studentDeal: true,
+    accessibility: "Wheelchair accessible",
+    noiseLevel: "Quiet",
+    events: ["Exam Prep Workshops"]
+  },
+
+  {
+    id: "b12",
+    name: "Moviehouse Cinema",
+    address: "77 Theater Blvd, Austin, TX 78703",
+    phone: "(512) 555-1212",
+    website: "https://moviehouse.example.com",
+    category: "Entertainment",
+    rating: 4.0,
+    reviewCount: 340,
+    priceRange: 3,
+    openedDate: "1998-07-01",
+    shortDescription: "Historic cinema showing new releases and occasional indie screenings.",
+    tags: ["movies", "family", "indie"],
+    photos: [],
+    hours: {
+      monday: [{ open: "12:00", close: "23:00" }],
+      tuesday: [{ open: "12:00", close: "23:00" }],
+      wednesday: [{ open: "12:00", close: "23:00" }],
+      thursday: [{ open: "12:00", close: "23:00" }],
+      friday: [{ open: "12:00", close: "01:00" }],
+      saturday: [{ open: "10:00", close: "01:00" }],
+      sunday: [{ open: "10:00", close: "23:00" }]
+    },
+    reviews: [],
+    bookmarked: false,
+    deal: { description: "Student tickets on Tuesday nights $6 (ID required).", expires: "2025-11-30" },
+    studentDeal: true,
+    accessibility: "Wheelchair accessible seating",
+    noiseLevel: "Loud",
+    events: ["Indie Film Night — 1st Thu of month"]
   }
 ];
-
 
 // make available globally in browser (simple offline use)
 if (typeof window !== "undefined") {
