@@ -26,10 +26,7 @@
             <span class="toggle-ball"><span class="icon-sun">☀️</span><span class="icon-moon">🌙</span></span>
           </label>
         </div>
-        <div class="nav-right">
-    <img src="LocalLink_logo.png" alt="LocalLink Logo" class="logo" />
-  </div>
-
+      </div>
     </nav>
 
     <h1 class="HeaderTitle">LocalLink</h1>
@@ -42,7 +39,7 @@
       <div class="search-div">
         <input type="text" placeholder="Search businesses..." id="search-bar">
       </div>
-      <br>
+
       <!-- where businesses load -->
       <div id="business-list"></div>
 
@@ -91,55 +88,39 @@
   </footer>
 
   <!-- your existing data + app scripts -->
-  <script src="SampleData.js"></script>
+  <script src="sample.js"></script>
   <script src="app.js"></script>
 
   <!-- small, unobtrusive wiring for modal + theme toggle (feel free to remove if you already have this logic in app.js) -->
   <script>
-    (function () {
-      // modal wiring
-      const aiBtn = document.getElementById('ai-explore-btn');
-      const modal = document.getElementById('ai-recommendations-modal');
-      const closeBtn = modal ? modal.querySelector('.ai-close-btn') : null;
+  (function () {
+    const themeSwitch = document.getElementById('theme-switch');
+    if (!themeSwitch) return;
 
-      if (aiBtn && modal) {
-        aiBtn.addEventListener('click', () => {
-          modal.style.display = 'block';
-          // If you want the AI tool to populate content immediately, call whatever function in app.js here
-          // e.g. window.populateAIRecommendations && window.populateAIRecommendations();
-        });
+    // apply saved preference on load
+    try {
+      const saved = localStorage.getItem('ll-theme');
+      if (saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeSwitch.checked = true;
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        themeSwitch.checked = false;
       }
-      if (closeBtn) {
-        closeBtn.addEventListener('click', () => modal.style.display = 'none');
-      }
-      // close when clicking outside content
-      window.addEventListener('click', (e) => {
-        if (e.target === modal) modal.style.display = 'none';
-      });
+    } catch (e) { /* ignore storage errors */ }
 
-      // theme toggle (adds 'dark' class to body; style in CSS)
-      const themeSwitch = document.getElementById('theme-switch');
-      if (themeSwitch) {
-        // load saved preference
-        try {
-          const saved = localStorage.getItem('ll-theme');
-          if (saved === 'dark') {
-            document.body.classList.add('dark');
-            themeSwitch.checked = true;
-          }
-        } catch (e) { /* ignore storage errors */ }
-
-        themeSwitch.addEventListener('change', () => {
-          if (themeSwitch.checked) {
-            document.body.classList.add('dark');
-            localStorage.setItem('ll-theme', 'dark');
-          } else {
-            document.body.classList.remove('dark');
-            localStorage.setItem('ll-theme', 'light');
-          }
-        });
+    // listen for changes
+    themeSwitch.addEventListener('change', () => {
+      if (themeSwitch.checked) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('ll-theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('ll-theme', 'light');
       }
-    })();
-  </script>
+    });
+  })();
+</script>
+
 </body>
 </html>
