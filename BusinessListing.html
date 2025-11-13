@@ -47,13 +47,93 @@
     <script src="sample.js"></script>
 
     <script>
-      // Inline render + bookmark checkbox UI (no persistence, no separate bookmark section)
+      // Inline render + bookmark checkbox UI + AI Review Analysis
 
       document.addEventListener('DOMContentLoaded', () => {
         const container = document.getElementById("listings");
 
         // clear container (in case)
         container.innerHTML = '';
+
+        // AI Analysis helper functions
+        const POS_WORDS = ["good","great","excellent","friendly","delicious","clean","fast","love","amazing","nice","best","helpful","comfortable","tasty","recommend","perfect","wonderful","awesome","fantastic","outstanding","pleasant","cozy","fresh","quality","enjoyed"];
+        const NEG_WORDS = ["bad","poor","slow","dirty","hate","terrible","expensive","rude","worst","noisy","disappointing","broken","late","smelly","awful","horrible","nasty","unpleasant","mediocre","overpriced","crowded","cold"];
+        const STOPWORDS = ["the","and","a","an","to","is","it","in","of","for","with","on","at","by","this","that","was","are","be","as","or","from","have","has","had","but","not","they","their","there","these","those"];
+
+        function splitSentences(text){
+          return text.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(Boolean);
+        }
+
+        function sentimentScore(text){
+          const words = text.toLowerCase().replace(/[^\w\s]/g, "").split(/\s+/).filter(Boolean);
+          let score = 0;
+          for(const w of words){
+            if(POS_WORDS.includes(w)) score += 1;
+            if(NEG_WORDS.includes(w)) score -= 1;
+          }
+          return score;
+        }
+
+        function topKeywords(allText, limit=5){
+          const words = allText.toLowerCase().replace(/[^\w\s]/g,"").split(/\s+/).filter(w => w && !STOPWORDS.includes(w));
+          const freq = {};
+          for(const w of words){
+            freq[w] = (freq[w]||0) + 1;
+          }
+          return Object.entries(freq)
+            .sort((a,b) => b[1]-a[1])
+            .slice(0, limit)
+            .map(x => x[0]);
+        }
+
+        function summarizeReviews(reviews, lines=2){
+          const allText = reviews.map(r => r.text || r).join(" ");
+          if(!allText.trim()) return "No reviews to summarize.";
+          const sentences = splitSentences(allText);
+          const keywords = topKeywords(allText, 20);
+          const scores = sentences.map(s => {
+            let sScore = sentimentScore(s);
+            const sWords = s.toLowerCase().replace(/[^\w\s]/g,"").split(/\s+/);
+            for(const k of keywords.slice(0,10)) if(sWords.includes(k)) sScore += 0.5;
+            return { s, score: sScore };
+          });
+          scores.sort((a,b) => b.score - a.score);
+          const chosen = scores.slice(0, lines).map(x => x.s);
+          return chosen.join(" ");
+        }
+
+        function analyzeBusiness(b){
+          const reviews = (b.reviews || []).map(r => r.text || "");
+          const allText = reviews.join(" ");
+          if(!allText.trim()){
+            return {
+              summary: "No reviews available.",
+              sentiment: "No data",
+              sentimentClass: "sentiment-neutral",
+              keywords: []
+            };
+          }
+          let total = 0;
+          for(const r of reviews) total += sentimentScore(r);
+          const avg = total / Math.max(1, reviews.length);
+
+          let sentimentLabel = "Neutral";
+          let sentimentClass = "sentiment-neutral";
+          if(avg > 0.5) {
+            sentimentLabel = "Positive";
+            sentimentClass = "sentiment-positive";
+          } else if(avg < -0.5) {
+            sentimentLabel = "Negative";
+            sentimentClass = "sentiment-negative";
+          }
+
+          return {
+            summary: summarizeReviews(reviews, 2),
+            sentiment: `${sentimentLabel} (score ${avg.toFixed(2)})`,
+            sentimentClass: sentimentClass,
+            keywords: topKeywords(allText, 6)
+          };
+        }
 
         // iterate over listings and render
         LISTINGS.forEach(business => {
@@ -68,10 +148,17 @@
             <p>Price Range: ${"$".repeat(business.priceRange || 0)}</p>
             <p>${business.website ? `<a href="${business.website}" target="_blank" rel="noopener">${business.website}</a>` : ''}</p>
             <button class="review-btn" data-id="${business.id}">Leave a Review</button>
+            <button class="analyze-btn">🤖 Analyze Reviews</button>
             <label class="bookmark-toggle" style="margin-left:10px;">
               <input type="checkbox" class="bookmark-checkbox" data-id="${business.id}">
               <span class="checkmark"></span> Bookmark
             </label>
+            
+            <div class="analysis-box">
+              <div class="analysis-summary"></div>
+              <div class="analysis-sentiment"></div>
+              <div class="analysis-keywords"></div>
+            </div>
             <hr>
           `;
 
@@ -81,7 +168,6 @@
           const reviewBtn = card.querySelector('.review-btn');
           reviewBtn.addEventListener('click', () => {
             const id = reviewBtn.dataset.id;
-            // use relative path and encode the id
             window.location.href = `./review.html?id=${encodeURIComponent(id)}`;
           });
 
@@ -89,6 +175,27 @@
           checkbox.addEventListener('change', () => {
             business.bookmarked = checkbox.checked;
             console.log(`${business.bookmarked ? 'Bookmarked' : 'Removed bookmark'}: ${business.name}`);
+          });
+
+          // AI Review Analysis
+          const analyzeBtn = card.querySelector(".analyze-btn");
+          const analysisBox = card.querySelector(".analysis-box");
+          const summaryEl = card.querySelector(".analysis-summary");
+          const sentimentEl = card.querySelector(".analysis-sentiment");
+          const keywordsEl = card.querySelector(".analysis-keywords");
+
+          analyzeBtn.addEventListener("click", () => {
+            if(analysisBox.classList.contains('active')){
+              analysisBox.classList.remove('active');
+              analyzeBtn.textContent = "🤖 Analyze Reviews";
+              return;
+            }
+            const res = analyzeBusiness(business);
+            summaryEl.innerHTML = `<strong>Summary:</strong> ${res.summary}`;
+            sentimentEl.innerHTML = `<strong>Overall Sentiment:</strong> <span class="${res.sentimentClass}">${res.sentiment}</span>`;
+            keywordsEl.innerHTML = `<strong>Top Keywords:</strong> ${res.keywords.map(k => `<span class="keyword-chip">${k}</span>`).join("")}`;
+            analysisBox.classList.add('active');
+            analyzeBtn.textContent = "🤖 Hide Analysis";
           });
         });
       });
