@@ -45,45 +45,59 @@ function generateAIRecommendations() {
   const viewed = JSON.parse(localStorage.getItem(VIEWED_KEY) || '{}');
   const interactions = JSON.parse(localStorage.getItem(INTERACTIONS_KEY) || '[]');
 
-  // If no user data, show top-rated businesses
+  // If no user data, return empty recommendations
   if (bookmarked.length === 0 && Object.keys(viewed).length === 0) {
-    const topRated = LISTINGS
-      .filter(b => !b.bookmarked)
-      .sort((a, b) => b.rating - a.rating)
-      .slice(0, 6)
-      .map(b => ({
-        business: b,
-        score: 95,
-        reason: `Top-rated business with ${b.rating}⭐ rating`
-      }));
-    return { recommendations: topRated, reason: 'top-rated' };
+    return { recommendations: [], reason: 'no-data' };
   }
 
-  // Build user preferences from bookmarked businesses
+  // Build user preferences from bookmarked AND viewed businesses
   const userPreferences = {
     categories: {},
     tags: {},
     priceRange: [],
-    avgRating: 0
+    avgRating: 0,
+    totalBusinesses: 0
   };
 
+  // Learn from bookmarked businesses (higher weight)
   bookmarked.forEach(b => {
     if (b.category) {
-      userPreferences.categories[b.category] = (userPreferences.categories[b.category] || 0) + 1;
+      userPreferences.categories[b.category] = (userPreferences.categories[b.category] || 0) + 2;
     }
     if (b.tags) {
       b.tags.forEach(tag => {
-        userPreferences.tags[tag] = (userPreferences.tags[tag] || 0) + 1;
+        userPreferences.tags[tag] = (userPreferences.tags[tag] || 0) + 2;
       });
     }
     if (b.priceRange) {
       userPreferences.priceRange.push(b.priceRange);
     }
     userPreferences.avgRating += b.rating || 0;
+    userPreferences.totalBusinesses++;
   });
 
-  if (bookmarked.length > 0) {
-    userPreferences.avgRating /= bookmarked.length;
+  // Also learn from viewed businesses (lower weight but still counts)
+  Object.keys(viewed).forEach(viewedId => {
+    const viewedBusiness = LISTINGS.find(b => b.id === viewedId);
+    if (viewedBusiness && !viewedBusiness.bookmarked) {
+      if (viewedBusiness.category) {
+        userPreferences.categories[viewedBusiness.category] = (userPreferences.categories[viewedBusiness.category] || 0) + 1;
+      }
+      if (viewedBusiness.tags) {
+        viewedBusiness.tags.forEach(tag => {
+          userPreferences.tags[tag] = (userPreferences.tags[tag] || 0) + 1;
+        });
+      }
+      if (viewedBusiness.priceRange) {
+        userPreferences.priceRange.push(viewedBusiness.priceRange);
+      }
+      userPreferences.avgRating += viewedBusiness.rating || 0;
+      userPreferences.totalBusinesses++;
+    }
+  });
+
+  if (userPreferences.totalBusinesses > 0) {
+    userPreferences.avgRating /= userPreferences.totalBusinesses;
   }
 
   // Score each business based on user preferences

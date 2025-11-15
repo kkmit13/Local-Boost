@@ -50,6 +50,17 @@
       // Inline render + bookmark checkbox UI + AI Review Analysis
 
       document.addEventListener('DOMContentLoaded', () => {
+        // Load saved bookmarks from localStorage
+        const STORAGE_KEY = 'locallink_bookmarks_v1';
+        try {
+          const savedIds = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+          LISTINGS.forEach(business => {
+            business.bookmarked = savedIds.includes(business.id);
+          });
+        } catch(e) {
+          console.error('Failed to load bookmarks', e);
+        }
+
         const container = document.getElementById("listings");
 
         // clear container (in case)
@@ -148,10 +159,12 @@
             <p>Price Range: ${"$".repeat(business.priceRange || 0)}</p>
             <p>${business.website ? `<a href="${business.website}" target="_blank" rel="noopener">${business.website}</a>` : ''}</p>
             <button class="review-btn" data-id="${business.id}">Leave a Review</button>
-            <button class="analyze-btn">🤖 Analyze Reviews</button>
-            <label class="bookmark-toggle" style="margin-left:10px;">
-              <input type="checkbox" class="bookmark-checkbox" data-id="${business.id}">
-              <span class="checkmark"></span> Bookmark
+            <button class="analyze-btn">Analyze Reviews</button>
+            <label class="bookmark-toggle">
+              <input type="checkbox" class="bookmark-checkbox" data-id="${business.id}" ${business.bookmarked ? 'checked' : ''}>
+              <span class="bookmark-icon">☆</span>
+              <span class="bookmark-icon-filled">★</span>
+              <span class="bookmark-text">Bookmark</span>
             </label>
             
             <div class="analysis-box">
@@ -174,7 +187,16 @@
           const checkbox = card.querySelector('.bookmark-checkbox');
           checkbox.addEventListener('change', () => {
             business.bookmarked = checkbox.checked;
-            console.log(`${business.bookmarked ? 'Bookmarked' : 'Removed bookmark'}: ${business.name}`);
+            
+            // Save to localStorage
+            const STORAGE_KEY = 'locallink_bookmarks_v1';
+            const bookmarkedIds = LISTINGS.filter(b => b.bookmarked).map(b => b.id);
+            try {
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(bookmarkedIds));
+              console.log(`${business.bookmarked ? 'Bookmarked' : 'Removed bookmark'}: ${business.name}`);
+            } catch(e) {
+              console.error('Failed to save bookmark', e);
+            }
           });
 
           // AI Review Analysis
