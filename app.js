@@ -1,10 +1,17 @@
-// app.js — minimal & readable: live search + render + bookmarks (localStorage) + AI recommendations
+// app.js
+// LocalLink — minimal readable app script:
+// - storage for bookmarks (localStorage)
+// - simple live search + render results
+// - bookmarks UI (persists)
+// - review-only AI recommendations (modal)
 
-// storage
 const STORAGE_KEY = 'locallink_bookmarks_v1';
 const VIEWED_KEY = 'locallink_viewed_v1';
 const INTERACTIONS_KEY = 'locallink_interactions_v1';
 
+/* ---------------------------
+   Storage helpers
+   --------------------------- */
 function loadSavedIds() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
   catch { return []; }
@@ -13,13 +20,12 @@ function saveSavedIds(arr) {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); } catch {}
 }
 
-// Tracking functions for AI
 function trackBusinessView(businessId) {
   try {
     const viewed = JSON.parse(localStorage.getItem(VIEWED_KEY) || '{}');
     viewed[businessId] = (viewed[businessId] || 0) + 1;
     localStorage.setItem(VIEWED_KEY, JSON.stringify(viewed));
-  } catch(e) { console.error('trackBusinessView error', e); }
+  } catch(e) { /* ignore */ }
 }
 
 function trackInteraction(businessId, type = 'view') {
@@ -30,185 +36,135 @@ function trackInteraction(businessId, type = 'view') {
       type: type,
       timestamp: Date.now()
     });
-    if (interactions.length > 100) interactions.shift();
+    if (interactions.length > 200) interactions.shift();
     localStorage.setItem(INTERACTIONS_KEY, JSON.stringify(interactions));
-  } catch(e) { console.error('trackInteraction error', e); }
+  } catch(e) { /* ignore */ }
 }
 
-// AI Recommendation Engine
+/* ---------------------------
+   Review-based AI recommender
+   (replaces previous personalized engine)
+   --------------------------- */
 function generateAIRecommendations() {
   if (typeof LISTINGS === 'undefined') {
     return { recommendations: [], reason: 'no-data' };
   }
 
-  const bookmarked = LISTINGS.filter(b => b.bookmarked);
-  const viewed = JSON.parse(localStorage.getItem(VIEWED_KEY) || '{}');
-  const interactions = JSON.parse(localStorage.getItem(INTERACTIONS_KEY) || '[]');
+  // only businesses with reviews are considered
+  const withReviews = LISTINGS.filter(b => Array.isArray(b.reviews) && b.reviews.length > 0);
 
-  // If no user data, return empty recommendations
-  if (bookmarked.length === 0 && Object.keys(viewed).length === 0) {
-    return { recommendations: [], reason: 'no-data' };
+  // fallback: no reviews at all -> top-rated by rating field
+  if (withReviews.length === 0) {
+    const topRated = LISTINGS
+      .slice()
+      .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+      .slice(0, 6)
+      .map(b => ({
+        business: b,
+        score: Math.round(((b.rating || 0) / 5) * 100),
+        reason: `Top-rated (${b.rating || '—'}★)`
+      }));
+    return { recommendations: topRated, reason: 'fallback-top-rated' };
   }
 
-  // Build user preferences from bookmarked AND viewed businesses
-  const userPreferences = {
-    categories: {},
-    tags: {},
-    priceRange: [],
-    avgRating: 0,
-    totalBusinesses: 0
-  };
+  const recomputed = withReviews.map(b => {
+    const total = b.reviews.length;
+    const sum = b.reviews.reduce((s, r) => s + (r.rating || 0), 0);
+    const avg = total ? sum / total : 0;
+    const positive = b.reviews.filter(r => (r.rating || 0) >= 4).length;
 
-  // Learn from bookmarked businesses (higher weight)
-  bookmarked.forEach(b => {
-    if (b.category) {
-      userPreferences.categories[b.category] = (userPreferences.categories[b.category] || 0) + 2;
-    }
-    if (b.tags) {
-      b.tags.forEach(tag => {
-        userPreferences.tags[tag] = (userPreferences.tags[tag] || 0) + 2;
-      });
-    }
-    if (b.priceRange) {
-      userPreferences.priceRange.push(b.priceRange);
-    }
-    userPreferences.avgRating += b.rating || 0;
-    userPreferences.totalBusinesses++;
-  });
-
-  // Also learn from viewed businesses (lower weight but still counts)
-  Object.keys(viewed).forEach(viewedId => {
-    const viewedBusiness = LISTINGS.find(b => b.id === viewedId);
-    if (viewedBusiness && !viewedBusiness.bookmarked) {
-      if (viewedBusiness.category) {
-        userPreferences.categories[viewedBusiness.category] = (userPreferences.categories[viewedBusiness.category] || 0) + 1;
-      }
-      if (viewedBusiness.tags) {
-        viewedBusiness.tags.forEach(tag => {
-          userPreferences.tags[tag] = (userPreferences.tags[tag] || 0) + 1;
-        });
-      }
-      if (viewedBusiness.priceRange) {
-        userPreferences.priceRange.push(viewedBusiness.priceRange);
-      }
-      userPreferences.avgRating += viewedBusiness.rating || 0;
-      userPreferences.totalBusinesses++;
-    }
-  });
-
-  if (userPreferences.totalBusinesses > 0) {
-    userPreferences.avgRating /= userPreferences.totalBusinesses;
-  }
-
-  // Score each business based on user preferences
-  const recommendations = LISTINGS
-    .filter(b => !b.bookmarked)
-    .map(business => {
-      let score = 0;
-      let reasons = [];
-
-      // Category match
-      if (business.category && userPreferences.categories[business.category]) {
-        const categoryScore = Math.min(40, userPreferences.categories[business.category] * 20);
-        score += categoryScore;
-        reasons.push(`Similar category (${business.category})`);
-      }
-
-      // Tags match
-      if (business.tags) {
-        let tagMatches = 0;
-        business.tags.forEach(tag => {
-          if (userPreferences.tags[tag]) {
-            tagMatches += userPreferences.tags[tag];
-          }
-        });
-        if (tagMatches > 0) {
-          const tagScore = Math.min(30, tagMatches * 10);
-          score += tagScore;
-          reasons.push(`Matches your interests`);
+    // most recent review date (if available)
+    let mostRecentDate = null;
+    for (const r of b.reviews) {
+      if (r.date) {
+        const d = new Date(r.date);
+        if (!isNaN(d)) {
+          if (!mostRecentDate || d > mostRecentDate) mostRecentDate = d;
         }
       }
+    }
+    let recencyBonus = 0;
+    if (mostRecentDate) {
+      const days = Math.floor((Date.now() - mostRecentDate.getTime()) / (1000 * 60 * 60 * 24));
+      if (days <= 30) recencyBonus = 10;
+      else if (days <= 90) recencyBonus = 6;
+      else if (days <= 365) recencyBonus = 3;
+    }
 
-      // Price range match
-      if (business.priceRange && userPreferences.priceRange.includes(business.priceRange)) {
-        score += 10;
-      }
+    const avgScore = (avg / 5) * 60;                     // 0..60
+    const posShareScore = (positive / total) * 25;       // 0..25
+    const countBoost = Math.min(5, Math.log10(total + 1) * 5); // up to ~5
+    const rawScore = avgScore + posShareScore + countBoost + recencyBonus;
+    const score = Math.min(100, Math.round(rawScore));
 
-      // Rating match
-      if (business.rating >= userPreferences.avgRating) {
-        score += Math.min(20, (business.rating - userPreferences.avgRating) * 10);
-        if (business.rating >= 4.5) {
-          reasons.push(`Highly rated (${business.rating}⭐)`);
-        }
-      }
+    const exampleReview = b.reviews.find(r => (r.rating || 0) >= 4) || b.reviews[0];
+    const snippet = exampleReview && exampleReview.text ? String(exampleReview.text).slice(0, 160) : '';
 
-      // Previously viewed
-      if (viewed[business.id]) {
-        score += Math.min(10, viewed[business.id] * 5);
-        reasons.push(`You've shown interest before`);
-      }
+    const reasonParts = [];
+    reasonParts.push(`Avg ${avg.toFixed(1)}★ (${total} reviews)`);
+    if (positive > 0) reasonParts.push(`${positive}/${total} positive`);
+    if (recencyBonus > 0) reasonParts.push('Recent review');
+    const reason = reasonParts.join(' · ');
 
-      // Has deals
-      if (business.deal) {
-        score += 5;
-        reasons.push(`Has active deals`);
-      }
+    return {
+      business: b,
+      score,
+      reason,
+      snippet,
+      mostRecent: mostRecentDate ? mostRecentDate.toISOString().slice(0, 10) : null
+    };
+  });
 
-      return {
-        business: business,
-        score: Math.min(100, Math.round(score)),
-        reason: reasons.length > 0 ? reasons.join(', ') : 'Good match for you'
-      };
-    })
-    .filter(rec => rec.score > 20)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 6);
-
-  return { recommendations, reason: 'personalized' };
+  recomputed.sort((a, b) => b.score - a.score);
+  return { recommendations: recomputed.slice(0, 6), reason: 'review-based' };
 }
 
-// Display AI Recommendations Modal
 function displayAIRecommendations() {
   const modal = document.getElementById('ai-recommendations-modal');
   const container = document.getElementById('ai-recommendations-container');
-  
+
   if (!modal || !container) return;
 
-  const { recommendations, reason } = generateAIRecommendations();
-
+  const { recommendations } = generateAIRecommendations();
   container.innerHTML = '';
 
-  if (recommendations.length === 0) {
+  if (!recommendations || recommendations.length === 0) {
     container.innerHTML = `
       <div class="ai-no-data">
-        <h3>🔍 No recommendations yet!</h3>
-        <p>Start by bookmarking businesses you like, and our AI will suggest similar ones you might enjoy.</p>
-        <p class="ai-suggestion">Visit the <a href="BusinessListing.html">Business Listings</a> page to explore!</p>
+        <h3>🔍 No recommendations yet</h3>
+        <p>We use customer reviews to recommend places. Add some reviews or explore the Business Listings to help the system.</p>
+        <p class="ai-suggestion">Visit the <a href="BusinessListing.html">Business Listings</a> to explore and leave reviews.</p>
       </div>
     `;
   } else {
     recommendations.forEach(rec => {
       const card = document.createElement('div');
       card.className = 'ai-recommendation-card';
-      
+
       card.innerHTML = `
         <div class="ai-match-score">${rec.score}% Match</div>
         <h3>${escapeHtml(rec.business.name)}</h3>
-        <p><strong>${escapeHtml(rec.business.category)}</strong></p>
+        <p><strong>${escapeHtml(rec.business.category || '')}</strong> ${rec.mostRecent ? `<small>· recent: ${rec.mostRecent}</small>` : ''}</p>
         <p>${escapeHtml(rec.business.shortDescription || '')}</p>
-        <p>⭐ ${rec.business.rating} (${rec.business.reviewCount || 0} reviews)</p>
+        <p>⭐ ${rec.business.rating || '—'} (${rec.business.reviewCount || rec.business.reviews.length || 0} reviews)</p>
         <p>💰 ${"$".repeat(rec.business.priceRange || 1)}</p>
         ${rec.business.deal ? `<p style="color: var(--color-success); font-weight: 600;">🎉 Deal Available!</p>` : ''}
-        <div class="ai-reason">
-          <strong>Why?</strong> ${escapeHtml(rec.reason)}
-        </div>
-        <button class="review-btn" style="margin-top: 10px; width: 100%;" onclick="window.location.href='BusinessListing.html'">View Details</button>
+        ${rec.snippet ? `<blockquote class="ai-review-snippet">“${escapeHtml(rec.snippet)}”</blockquote>` : ''}
+        <div class="ai-reason"><strong>Why?</strong> ${escapeHtml(rec.reason)}</div>
+        <button class="review-btn ai-view-btn" style="margin-top: 10px; width: 100%;">View Details</button>
       `;
-      
+
+      // View Details should go to BusinessListing focused (add focus param)
+      const viewBtn = card.querySelector('.ai-view-btn');
+      viewBtn.addEventListener('click', () => {
+        window.location.href = `BusinessListing.html?focus=${encodeURIComponent(rec.business.id)}`;
+      });
+
       container.appendChild(card);
-      
+
+      // track that user saw the recommendation
       card.addEventListener('click', () => {
-        trackInteraction(rec.business.id, 'recommendation-view');
+        try { trackInteraction(rec.business.id, 'recommendation-view'); } catch (e) {}
       });
     });
   }
@@ -216,69 +172,24 @@ function displayAIRecommendations() {
   modal.style.display = 'block';
 }
 
-// Initialize AI features
-function initAIRecommendations() {
-  const aiBtn = document.getElementById('ai-explore-btn');
-  const modal = document.getElementById('ai-recommendations-modal');
-  const closeBtn = document.querySelector('.ai-close-btn');
-
-  if (aiBtn) {
-    aiBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      displayAIRecommendations();
-    });
-  }
-
-  if (closeBtn && modal) {
-    closeBtn.addEventListener('click', () => {
-      modal.style.display = 'none';
-    });
-  }
-
-  if (modal) {
-    window.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.style.display = 'none';
-      }
-    });
-  }
-
-  // Track business views
-  if (typeof LISTINGS !== 'undefined') {
-    const cards = document.querySelectorAll('.business-card');
-    cards.forEach(card => {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const checkbox = card.querySelector('.bookmark-checkbox');
-            if (checkbox && checkbox.dataset.id) {
-              trackBusinessView(checkbox.dataset.id);
-            }
-          }
-        });
-      }, { threshold: 0.5 });
-      observer.observe(card);
-    });
-  }
-}
-
-// Utility function for escaping HTML
+/* ---------------------------
+   Small utility
+   --------------------------- */
 function escapeHtml(s) {
   if (!s && s !== 0) return '';
-  return String(s).replace(/[&<>"']/g, m => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  }[m]));
+  return String(s).replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
 }
 
-// main
+/* ---------------------------
+   Rendering + Search + Bookmarks
+   --------------------------- */
 document.addEventListener('DOMContentLoaded', () => {
   const searchBar = document.getElementById('search-bar');
   const listContainer = document.getElementById('business-list');
   const bookmarksContainer = document.getElementById('bookmarked-businesses');
+  const aiBtn = document.getElementById('ai-explore-btn');
+  const aiModal = document.getElementById('ai-recommendations-modal');
+  const aiClose = aiModal ? aiModal.querySelector('.ai-close-btn') : null;
 
   if (typeof LISTINGS === 'undefined') {
     if (listContainer) listContainer.textContent = 'Listings data not available.';
@@ -289,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const saved = loadSavedIds();
   LISTINGS.forEach(item => item.bookmarked = saved.includes(item.id));
 
-  // render bookmarks (very small)
+  // render bookmarks
   function renderBookmarks() {
     if (!bookmarksContainer) return;
     bookmarksContainer.innerHTML = '';
@@ -308,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // render results into listContainer
+  // render results
   function renderResults(items) {
     listContainer.innerHTML = '';
     if (!items || items.length === 0) {
@@ -359,6 +270,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
       listContainer.appendChild(card);
 
+      // track view when card is in view (one-time)
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            trackBusinessView(b.id);
+            observer.disconnect();
+          }
+        });
+      }, { threshold: 0.6 });
+      observer.observe(card);
+
       // checkbox listener
       cb.addEventListener('change', () => {
         b.bookmarked = cb.checked;
@@ -369,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // filter function
+  // simple substring search across name/category/description/tags
   function filterByQuery(q) {
     if (!q) return [];
     const ql = q.trim().toLowerCase();
@@ -382,23 +304,69 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // live update
-  function update() {
+  // live update (debounced)
+  function debounce(fn, wait=200) {
+    let t;
+    return (...args) => {
+      clearTimeout(t);
+      t = setTimeout(() => fn(...args), wait);
+    };
+  }
+
+  const doUpdate = debounce(() => {
     const q = searchBar ? searchBar.value : '';
     if (!q || q.trim() === '') {
-      listContainer.innerHTML = ''; // show nothing when empty
+      listContainer.innerHTML = ''; // show nothing when empty (as before)
       return;
     }
     const results = filterByQuery(q);
     renderResults(results);
+  }, 160);
+
+  if (searchBar) searchBar.addEventListener('input', doUpdate);
+
+  // initialize AI button / modal wiring
+  if (aiBtn) {
+    aiBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      displayAIRecommendations();
+    });
+  }
+  if (aiClose && aiModal) {
+    aiClose.addEventListener('click', () => { aiModal.style.display = 'none'; });
+  }
+  if (aiModal) {
+    window.addEventListener('click', (e) => {
+      if (e.target === aiModal) aiModal.style.display = 'none';
+    });
   }
 
-  // wire input
-  if (searchBar) searchBar.addEventListener('input', update);
-
-  // initial render of bookmarks only
+  // initial bookmarks render
   renderBookmarks();
-  
-  // Initialize AI recommendations
-  initAIRecommendations();
+
+  // if page loaded with ?focus=id, scroll & highlight that card after a short delay
+  (function handleFocusParam() {
+    const params = new URLSearchParams(window.location.search);
+    const focus = params.get('focus');
+    if (!focus) return;
+    // navigate to listings page if not on it
+    // but if we're on this page and business cards render, try to scroll to it
+    // We'll attempt to render all listings and then find the card by dataset id
+    renderResults(LISTINGS);
+    setTimeout(() => {
+      const allCards = Array.from(document.querySelectorAll('.business-card'));
+      for (const card of allCards) {
+        const cb = card.querySelector('.bookmark-checkbox');
+        if (cb && cb.dataset.id === focus) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          card.style.transition = 'background-color 0.6s ease';
+          const original = card.style.backgroundColor;
+          card.style.backgroundColor = '#fff8c6';
+          setTimeout(() => { card.style.backgroundColor = original || ''; }, 1200);
+          break;
+        }
+      }
+    }, 250);
+  })();
+
 });
