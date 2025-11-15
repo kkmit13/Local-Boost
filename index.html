@@ -83,33 +83,26 @@
   <script src="sample.js"></script>
   <script src="app.js"></script>
 
-  <!-- small, unobtrusive wiring for modal + theme toggle (feel free to remove if you already have this logic in app.js) -->
+  <!-- AI modal wiring (left unchanged) -->
   <script>
   (function () {
-    const themeSwitch = document.getElementById('theme-switch');
-    if (!themeSwitch) return;
+    const aiBtn = document.getElementById('ai-explore-btn');
+    const modal = document.getElementById('ai-recommendations-modal');
+    const closeBtn = modal ? modal.querySelector('.ai-close-btn') : null;
 
-    // apply saved preference on load
-    try {
-      const saved = localStorage.getItem('ll-theme');
-      if (saved === 'dark') {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        themeSwitch.checked = true;
-      } else {
-        document.documentElement.removeAttribute('data-theme');
-        themeSwitch.checked = false;
-      }
-    } catch (e) { /* ignore storage errors */ }
-
-    // listen for changes
-    themeSwitch.addEventListener('change', () => {
-      if (themeSwitch.checked) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('ll-theme', 'dark');
-      } else {
-        document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('ll-theme', 'light');
-      }
+    if (aiBtn && modal) {
+      aiBtn.addEventListener('click', () => {
+        modal.style.display = 'block';
+        // If you want the AI tool to populate content immediately, call whatever function in app.js here
+        // e.g. window.populateAIRecommendations && window.populateAIRecommendations();
+      });
+    }
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => modal.style.display = 'none');
+    }
+    // close when clicking outside content
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) modal.style.display = 'none';
     });
   })();
 </script>
