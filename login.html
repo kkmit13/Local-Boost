@@ -1,0 +1,41 @@
+<html>
+<body>
+<link rel="stylesheet" href="login.css">
+<center>
+<div id="app">
+
+    <!-- LOGIN PAGE -->
+    <section id="loginPage" class="page active">
+      <h1>LocalLink Login</h1>
+      <form id="loginForm">
+        <input type="text" id="loginUsername" placeholder="Username" required />
+        <input type="password" id="loginPassword" placeholder="Password" required />
+        <button type="submit">Login</button>
+      </form>
+      <p>Don't have an account? <button id="toSignupBtn" class="link-btn">Sign up</button></p>
+      <div id="loginError" class="error-msg"></div>
+    </section>
+
+    <!-- SIGNUP PAGE -->
+    <section id="signupPage" class="page">
+      <h1>Create Account</h1>
+      <form id="signupForm">
+        <input type="text" id="signupUsername" placeholder="Username" required />
+        <input type="password" id="signupPassword" placeholder="Password" required />
+        <input type="password" id="signupPasswordConfirm" placeholder="Confirm Password" required />
+        <button type="submit">Create Account</button>
+      </form>
+      <p>Already have an account? <button id="toLoginBtn" class="link-btn">Login</button></p>
+      <div id="signupError" class="error-msg"></div>
+    </section>
+</div>
+</center>
+
+<script src="login.js"></script>
+
+</body>
+</html>
+
+
+
+    
